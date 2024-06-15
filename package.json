@@ -6,6 +6,7 @@
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/index.js",
+    "prod": "npm run build && npm run start",
     "dev": "nodemon index.ts",
     "check": "prettier --check '**/*.{css,scss,html,js,md,ts,tsx}'",
     "format": "prettier --write '**/*.{css,scss,html,js,md,ts,tsx}'"
