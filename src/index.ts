@@ -15,8 +15,10 @@ const execute = async () => {
   const dayOfWeek = Day[today];
 
   if (dayOfWeek === "Monday" || dayOfWeek === "Thursday") {
+    console.log("Sending full item report reminder");
     fullItemReportReminder();
   } else {
+    console.log("Sending due today reminder");
     dueTodayReminder();
   }
 };
