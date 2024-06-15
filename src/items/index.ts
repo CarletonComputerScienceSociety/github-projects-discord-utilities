@@ -57,7 +57,11 @@ export const filterForUrgentItems = (items: Item[]) => {
     if (!item.dueDate) {
       return false;
     }
-    return item.dueDate <= tomorrow && item.status !== "Done";
+    return (
+      item.dueDate <= tomorrow &&
+      item.status !== "Done" &&
+      item.assignedUsers.length !== 0
+    );
   });
 };
 

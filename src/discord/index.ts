@@ -18,7 +18,10 @@ export const sendDiscordItemMessage = async (
 ): Promise<Result<any, Error>> => {
   // TODO: move to .env
   const webhookUrl =
-    "https://discord.com/api/webhooks/1251302978720239726/UgldsmHJfbdpZ9cLDeeGXEI34FsQU4RPAh7tMqccWYsTv-mXPK13wwAiM-lqfveHN4nM";
+    "https://discord.com/api/webhooks/1251460718113587234/hJXdhq5KCJHAYAoA-9ie_2FVuwr7rNJIB7FjyPgvDR544sKJgo507x7jVn_qsoHWZB_O";
+
+  // const webhookUrl =
+  //   "https://discord.com/api/webhooks/1251302978720239726/UgldsmHJfbdpZ9cLDeeGXEI34FsQU4RPAh7tMqccWYsTv-mXPK13wwAiM-lqfveHN4nM";
 
   const messageHeader = formatMessageTitle(message.title, message.message);
   const messageSections = message.sections.map((section) => {
