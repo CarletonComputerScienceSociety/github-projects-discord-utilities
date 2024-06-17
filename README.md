@@ -24,7 +24,13 @@ cd github-project-reminders
 npm install
 ```
 
-4. Start the job:
+4. Install dotenv-cli
+
+```
+npm install -g dotenv-cli
+```
+
+5. Start the job:
 
 ```
 npm run prod
