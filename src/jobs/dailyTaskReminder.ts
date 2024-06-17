@@ -1,4 +1,4 @@
-import { dueTodayReminder, fullItemReportReminder } from "./reminders";
+import { dueTodayReminder, fullItemReportReminder } from "../reminders";
 
 const execute = async () => {
   enum Day {
@@ -14,7 +14,7 @@ const execute = async () => {
   const today = new Date().getDay();
   const dayOfWeek = Day[today];
 
-  if (dayOfWeek === "Monday" || dayOfWeek === "Thursday") {
+  if (dayOfWeek === "Sunday" || dayOfWeek === "Thursday") {
     console.log("Sending full item report reminder");
     fullItemReportReminder();
   } else {
