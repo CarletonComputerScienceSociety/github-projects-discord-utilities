@@ -30,7 +30,21 @@ npm install
 npm install -g dotenv-cli
 ```
 
-5. Start the job:
+5. Create a "test" Discord channel webhook
+
+- Create a private Discord text channel and click settings
+- Create a webhook on the integrations screen and copy the webhook url
+
+![instructions](https://i.imgur.com/Qm9ZcsM.png)
+![instructions2](https://i.imgur.com/ki3cjHN.png)
+
+6. Create a `.env` file with the webhook url
+
+```
+DISCORD_CHANNEL_WEBHOOK_URL=YOUR_WEBHOOK_URL_HERE
+```
+
+7. Start the job:
 
 ```
 npm run prod

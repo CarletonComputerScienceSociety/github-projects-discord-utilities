@@ -1,7 +1,10 @@
 import axios from "axios";
 import { Err, Ok, Result } from "ts-results";
+import dotenv from "dotenv";
 import githubDiscordMap from "../../data/githubDiscordMap.json";
 import { Item } from "../items";
+
+dotenv.config();
 
 export interface DiscordItemMessage {
   title: string;
@@ -16,13 +19,7 @@ export interface DiscordItemMessage {
 export const sendDiscordItemMessage = async (
   message: DiscordItemMessage,
 ): Promise<Result<any, Error>> => {
-  // TODO: move to .env
-  const webhookUrl =
-    "https://discord.com/api/webhooks/1251460718113587234/hJXdhq5KCJHAYAoA-9ie_2FVuwr7rNJIB7FjyPgvDR544sKJgo507x7jVn_qsoHWZB_O";
-
-  // const webhookUrl =
-  //   "https://discord.com/api/webhooks/1251302978720239726/UgldsmHJfbdpZ9cLDeeGXEI34FsQU4RPAh7tMqccWYsTv-mXPK13wwAiM-lqfveHN4nM";
-
+  const webhookUrl = process.env.DISCORD_CHANNEL_WEBHOOK_URL ?? "";
   const messageHeader = formatMessageTitle(message.title, message.message);
   const messageSections = message.sections.map((section) => {
     const sectionHeader = formatMessageSectionTitle(section.title);
