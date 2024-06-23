@@ -3,6 +3,7 @@ import {
   filterByDateRange,
   filterByLabel,
   filterByStatus,
+  filterForTwentyFourHours,
   filterForUnassigned,
   filterForUrgentItems,
   filterOutStatus,
@@ -95,6 +96,23 @@ describe("filterForUrgentItems", () => {
     const item3 = itemFactory({ dueDate: dayAfterTomorrow });
 
     const result = filterForUrgentItems([item1, item2, item3]);
+
+    expect(result).toEqual([item1, item2]);
+  });
+});
+
+describe("filterForTwentyFourHours", () => {
+  it("will return items that are overdue or due in the next 24 Hours", () => {
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const dayAfterTomorrow = new Date();
+    dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
+    const item1 = itemFactory({ dueDate: today });
+    const item2 = itemFactory({ dueDate: tomorrow });
+    const item3 = itemFactory({ dueDate: dayAfterTomorrow });
+
+    const result = filterForTwentyFourHours([item1, item2, item3]);
 
     expect(result).toEqual([item1, item2]);
   });

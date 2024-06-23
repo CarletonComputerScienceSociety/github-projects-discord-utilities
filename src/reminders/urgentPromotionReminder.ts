@@ -3,6 +3,7 @@ import { fetchProjectV2Items } from "../github";
 import {
   convertGithubItems,
   filterByLabel,
+  filterForTwentyFourHours,
   filterForUrgentItems,
   filterOutStatus,
 } from "../items";
@@ -15,15 +16,16 @@ export const urgentPromotionReminder = async () => {
 
   const items = convertGithubItems(githubItemsResult.val);
   const nonBacklogItems = filterOutStatus(items, "Backlog");
-  const urgentItems = filterForUrgentItems(nonBacklogItems);
+  const urgentItems = filterForTwentyFourHours(nonBacklogItems);
   const itemsWithLabels = filterByLabel(urgentItems, ["discord announcement", "social post", "scs email"]);
+
+  if (itemsWithLabels.length === 0) {
+    return null;
+  }
 
   const message = {
     title: "Urgent Promotional Items Reminder 📬‼️",
-    message: 
-    itemsWithLabels.length === 0
-    ? "Nothing urgent or unassigned today! 🐀🥂" 
-    : "Check out all upcoming tasks [here.](https://github.com/orgs/CarletonComputerScienceSociety/projects/18) 🐀🐀",
+    message: "Check out all upcoming tasks [here.](https://github.com/orgs/CarletonComputerScienceSociety/projects/18) 🐀🐀",
     sections: [
       ...(itemsWithLabels.length > 0
         ? [
