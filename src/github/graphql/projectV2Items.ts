@@ -34,6 +34,14 @@ export const PROJECT_V2_ITEMS = `
 								}
 							}
 						}
+						... on ProjectV2ItemFieldLabelValue {
+							labels(first: 5) {
+								totalCount
+								nodes {
+									name
+								}
+							}
+						}
 			... on ProjectV2ItemFieldSingleSelectValue {
 							id
 							name

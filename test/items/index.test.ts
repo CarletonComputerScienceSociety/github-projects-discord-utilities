@@ -1,6 +1,7 @@
 import { describe, expect } from "@jest/globals";
 import {
   filterByDateRange,
+  filterByLabel,
   filterByStatus,
   filterForUnassigned,
   filterForUrgentItems,
@@ -8,6 +9,7 @@ import {
   filterUpcomingItems,
 } from "../../src/items";
 import { itemFactory } from "./factories/item-factory";
+import exp from "constants";
 
 describe("filterByStatus", () => {
   it("will return items with the given status", () => {
@@ -114,3 +116,18 @@ describe("filterUpcomingItems", () => {
     expect(result).toEqual([item3]);
   });
 });
+
+describe("filterByLabels", () => {
+  it("will return items with any of the labels matching", () => {
+    const item1 = itemFactory({ labels: [] });
+    const item2 = itemFactory({ labels: ["social post"] });
+    const item3 = itemFactory({ labels: ["social post", "not a label"] });
+    const item4 = itemFactory({ labels: ["social post", "scs email"] });
+    const item5 = itemFactory({ labels: ["scs email", "not a label"] });
+    const item6 = itemFactory({ labels: ["not a label 1", "not a label 2"] });
+
+    const result = filterByLabel([item1, item2, item3, item4, item5, item6], ["social post", "scs email"]);
+
+    expect(result).toEqual([item2, item3, item4, item5 ]);
+  })
+})

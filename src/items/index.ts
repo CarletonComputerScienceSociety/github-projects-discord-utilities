@@ -4,6 +4,7 @@ export interface Item {
   title: string;
   status: string;
   assignedUsers: string[];
+  labels?: string[];
   dueDate?: Date;
   url?: string;
 }
@@ -16,6 +17,9 @@ export const convertGithubItems = (items: ProjectV2Item[]): Item[] => {
     const status = item.fieldValues.nodes
       .filter((field) => field.name)
       .map((field) => field.name)[0];
+    const labels = item.fieldValues.nodes
+      .filter((field) => field.labels)
+      .flatMap((field) => field.labels.nodes.map((label) => label.name));
 
     // TODO: improve this
     let dueDate: Date | undefined;
@@ -28,6 +32,7 @@ export const convertGithubItems = (items: ProjectV2Item[]): Item[] => {
       title: item.content.title,
       url: item.content.url,
       assignedUsers,
+      labels,
       dueDate: dueDate,
       status: status,
     };
@@ -91,4 +96,8 @@ export const filterOutStatus = (items: Item[], status: string) => {
 
 export const filterForUnassigned = (items: Item[]) => {
   return items.filter((item) => item.assignedUsers.length === 0);
+};
+
+export const filterByLabel = (items: Item[], labels: string[]) => {
+  return items.filter((item) => labels.some((label) => item.labels?.includes(label)));
 };
