@@ -70,9 +70,9 @@ export const filterForUrgentItems = (items: Item[]) => {
   });
 };
 
-//for reminders ran at 8:30pm (midnight in UTC) checking the next 24 hours will pull up tasks 
+//for reminders ran at 8:30pm (midnight in UTC) checking the next 24 hours will pull up tasks
 //due the next day
-export const filterForTwentyFourHours= (items: Item[]) => {
+export const filterForTwentyFourHours = (items: Item[]) => {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
 
@@ -117,5 +117,7 @@ export const filterForUnassigned = (items: Item[]) => {
 };
 
 export const filterByLabel = (items: Item[], labels: string[]) => {
-  return items.filter((item) => labels.some((label) => item.labels?.includes(label)));
+  return items.filter((item) =>
+    labels.some((label) => item.labels?.includes(label)),
+  );
 };

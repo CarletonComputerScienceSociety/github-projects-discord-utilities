@@ -17,7 +17,11 @@ export const urgentPromotionReminder = async () => {
   const items = convertGithubItems(githubItemsResult.val);
   const nonBacklogItems = filterOutStatus(items, "Backlog");
   const urgentItems = filterForTwentyFourHours(nonBacklogItems);
-  const itemsWithLabels = filterByLabel(urgentItems, ["discord announcement", "social post", "scs email"]);
+  const itemsWithLabels = filterByLabel(urgentItems, [
+    "discord announcement",
+    "social post",
+    "scs email",
+  ]);
 
   if (itemsWithLabels.length === 0) {
     return null;
@@ -25,16 +29,17 @@ export const urgentPromotionReminder = async () => {
 
   const message = {
     title: "Urgent Promotional Items Reminder 📬‼️",
-    message: "Check out all upcoming tasks [here.](https://github.com/orgs/CarletonComputerScienceSociety/projects/18) 🐀🐀",
+    message:
+      "Check out all upcoming tasks [here.](https://github.com/orgs/CarletonComputerScienceSociety/projects/18) 🐀🐀",
     sections: [
       ...(itemsWithLabels.length > 0
         ? [
-          {
-            title: "🔥 Urgent & Overdue",
-            items: itemsWithLabels,
-          },
-        ]
-      : [])
+            {
+              title: "🔥 Urgent & Overdue",
+              items: itemsWithLabels,
+            },
+          ]
+        : []),
     ],
   };
 

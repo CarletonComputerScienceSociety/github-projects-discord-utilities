@@ -144,8 +144,11 @@ describe("filterByLabels", () => {
     const item5 = itemFactory({ labels: ["scs email", "not a label"] });
     const item6 = itemFactory({ labels: ["not a label 1", "not a label 2"] });
 
-    const result = filterByLabel([item1, item2, item3, item4, item5, item6], ["social post", "scs email"]);
+    const result = filterByLabel(
+      [item1, item2, item3, item4, item5, item6],
+      ["social post", "scs email"],
+    );
 
-    expect(result).toEqual([item2, item3, item4, item5 ]);
-  })
-})
+    expect(result).toEqual([item2, item3, item4, item5]);
+  });
+});
