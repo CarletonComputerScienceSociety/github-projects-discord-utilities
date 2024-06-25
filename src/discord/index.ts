@@ -28,7 +28,7 @@ export const sendDiscordItemMessage = async (
       .map((item) =>
         section.includeLinks
           ? formatItemWithLink(item)
-          : formatItemWithLink(item),
+          : formatItem(item),
       )
       .join("\n");
     return `${sectionHeader} ${sectionItems}`;
