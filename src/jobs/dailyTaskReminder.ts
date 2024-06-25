@@ -1,6 +1,6 @@
 import { dueTodayReminder, fullItemReportReminder } from "../reminders";
 
-const execute = async () => {
+export const dailyTaskReminder = async () => {
   enum Day {
     Sunday,
     Monday,
@@ -22,5 +22,3 @@ const execute = async () => {
     dueTodayReminder();
   }
 };
-
-execute();

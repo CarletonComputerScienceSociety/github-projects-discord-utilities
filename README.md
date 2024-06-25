@@ -47,8 +47,14 @@ DISCORD_CHANNEL_WEBHOOK_URL=YOUR_WEBHOOK_URL_HERE
 7. Start the job:
 
 ```
-npm run prod
+npm run prod <jobname>
 ```
+
+## Jobs
+
+| Job Name            | Description                                            |
+| ------------------- | ------------------------------------------------------ |
+| `dailyTaskReminder` | Sends the reminder for upcoming tasks on a daily basis |
 
 ## Notes
 
