@@ -24,7 +24,7 @@ export const sendDiscordItemMessage = async (
   const messageSections = message.sections.map((section) => {
     const sectionHeader = formatMessageSectionTitle(section.title);
     const sectionItems = section.items
-      .map((item) => formatItemWithLink(item))
+      .map((item) => formatItem(item))
       .join("\n");
     return `${sectionHeader} ${sectionItems}`;
   });
@@ -75,10 +75,5 @@ const formatDiscordAssignees = (assignees: string[]) => {
 };
 
 const formatItem = (item: Item) => {
-  return `- ${item.title}: ${formatDiscordAssignees(item.assignedUsers)} - ${item?.dueDate ? formatDiscordDate(item.dueDate) : ""} - ${item.status}`;
-};
-
-// TODO: discord embeds spam the channel
-const formatItemWithLink = (item: Item) => {
   return `- [${item.title}](<${item.url}>): ${formatDiscordAssignees(item.assignedUsers)} - ${item.dueDate ? formatDiscordDate(item.dueDate) : ""} - ${item.status}`;
 };
