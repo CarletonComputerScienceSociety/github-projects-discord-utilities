@@ -75,10 +75,5 @@ const formatDiscordAssignees = (assignees: string[]) => {
 };
 
 const formatItem = (item: Item) => {
-  return `- ${item.title}: ${formatDiscordAssignees(item.assignedUsers)} - ${item?.dueDate ? formatDiscordDate(item.dueDate) : ""} - ${item.status}`;
-};
-
-// TODO: discord embeds spam the channel
-const formatItemWithLink = (item: Item) => {
-  return `- [${item.title}](${item.url}): ${formatDiscordAssignees(item.assignedUsers)} - ${item.dueDate ? formatDiscordDate(item.dueDate) : ""} - ${item.status}`;
+  return `- [${item.title}](<${item.url}>): ${formatDiscordAssignees(item.assignedUsers)} - ${item.dueDate ? formatDiscordDate(item.dueDate) : ""} - ${item.status}`;
 };
