@@ -11,6 +11,7 @@ export interface DiscordItemMessage {
   sections: {
     title: string;
     items: Item[];
+    includeLinks: boolean;
   }[];
   message: string;
 }
@@ -24,7 +25,11 @@ export const sendDiscordItemMessage = async (
   const messageSections = message.sections.map((section) => {
     const sectionHeader = formatMessageSectionTitle(section.title);
     const sectionItems = section.items
-      .map((item) => formatItem(item))
+      .map((item) =>
+        section.includeLinks
+          ? formatItemWithLink(item)
+          : formatItemWithLink(item),
+      )
       .join("\n");
     return `${sectionHeader} ${sectionItems}`;
   });
@@ -35,6 +40,12 @@ export const sendDiscordItemMessage = async (
     });
     return Ok(response.data);
   } catch (error) {
+    const alertWebhook =
+      "https://discord.com/api/webhooks/1255153467937390703/5v_7sPhvtFT3mtNPgogL1jcl56z6n2KHyjT1rCNf6wZ4vPFCAvrtr65fFVY562m48Znn";
+    await axios.post(alertWebhook, {
+      // @ts-ignore
+      content: `Failed to send Discord message: ${error.message}`,
+    });
     return Err(new Error("Failed to send Discord message"));
   }
 };
@@ -75,5 +86,9 @@ const formatDiscordAssignees = (assignees: string[]) => {
 };
 
 const formatItem = (item: Item) => {
+  return `- ${item.title}: ${formatDiscordAssignees(item.assignedUsers)} - ${item.dueDate ? formatDiscordDate(item.dueDate) : ""} - ${item.status}`;
+};
+
+const formatItemWithLink = (item: Item) => {
   return `- [${item.title}](<${item.url}>): ${formatDiscordAssignees(item.assignedUsers)} - ${item.dueDate ? formatDiscordDate(item.dueDate) : ""} - ${item.status}`;
 };

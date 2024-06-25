@@ -30,6 +30,7 @@ export const dueTodayReminder = async () => {
             {
               title: "🔥 Urgent & Overdue",
               items: urgentItems,
+              includeLinks: true,
             },
           ]
         : []),
@@ -38,6 +39,7 @@ export const dueTodayReminder = async () => {
             {
               title: "📥  Unassigned Items",
               items: unassignedItems,
+              includeLinks: false,
             },
           ]
         : []),

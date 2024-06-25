@@ -34,6 +34,7 @@ export const fullItemReportReminder = async () => {
             {
               title: "🔥 Urgent & Overdue",
               items: urgentItems,
+              includeLinks: true,
             },
           ]
         : []),
@@ -42,6 +43,7 @@ export const fullItemReportReminder = async () => {
             {
               title: "📅 Assigned Items",
               items: upcomingItems,
+              includeLinks: false,
             },
           ]
         : []),
@@ -50,6 +52,7 @@ export const fullItemReportReminder = async () => {
             {
               title: "📥  Unassigned Items",
               items: unassignedItems,
+              includeLinks: false,
             },
           ]
         : []),
