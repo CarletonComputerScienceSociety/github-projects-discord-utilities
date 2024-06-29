@@ -1,5 +1,6 @@
 import { Command } from "commander";
 import { dailyTaskReminder } from "./dailyTaskReminder";
+import { promotionReminder } from "./promotionReminder";
 
 const program = new Command();
 
@@ -10,6 +11,10 @@ program
     switch (jobname) {
       case "dailyTaskReminder": {
         dailyTaskReminder();
+        break;
+      }
+      case "promotionReminder": {
+        promotionReminder();
         break;
       }
       default: {

@@ -4,7 +4,6 @@ import {
   convertGithubItems,
   filterByLabel,
   filterForTwentyFourHours,
-  filterForUrgentItems,
   filterOutStatus,
 } from "../items";
 
@@ -24,25 +23,28 @@ export const urgentPromotionReminder = async () => {
   ]);
 
   if (itemsWithLabels.length === 0) {
+    console.log("No urgent promotion items");
     return null;
   }
 
   const message = {
     title: "Urgent Promotional Items Reminder 📬‼️",
     message:
-      "Check out all upcoming tasks [here.](https://github.com/orgs/CarletonComputerScienceSociety/projects/18) 🐀🐀",
+      "Check out all upcoming tasks [here.](https://github.com/orgs/CarletonComputerScienceSociety/projects/18) 🦆",
     sections: [
       ...(itemsWithLabels.length > 0
         ? [
             {
-              title: "🔥 Urgent & Overdue",
+              title: "🔔 Urgent Promotion Items",
               items: itemsWithLabels,
+              includeLinks: true,
             },
           ]
         : []),
     ],
   };
 
+  console.log("Sending promotion reminder");
   const discordMessageResult = await sendDiscordItemMessage(message);
   return discordMessageResult;
 };

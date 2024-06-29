@@ -74,17 +74,13 @@ export const filterForUrgentItems = (items: Item[]) => {
 //due the next day
 export const filterForTwentyFourHours = (items: Item[]) => {
   const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setDate(tomorrow.getDate() + 2);
 
   return items.filter((item) => {
     if (!item.dueDate) {
       return false;
     }
-    return (
-      item.dueDate <= tomorrow &&
-      item.status !== "Done" &&
-      item.assignedUsers.length !== 0
-    );
+    return item.dueDate <= tomorrow && item.status !== "Done";
   });
 };
 
