@@ -1,13 +1,16 @@
 import { describe, expect } from "@jest/globals";
 import {
   filterByDateRange,
+  filterByLabel,
   filterByStatus,
+  filterForTwentyFourHours,
   filterForUnassigned,
   filterForUrgentItems,
   filterOutStatus,
   filterUpcomingItems,
 } from "../../src/items";
 import { itemFactory } from "./factories/item-factory";
+import exp from "constants";
 
 describe("filterByStatus", () => {
   it("will return items with the given status", () => {
@@ -98,6 +101,23 @@ describe("filterForUrgentItems", () => {
   });
 });
 
+describe("filterForTwentyFourHours", () => {
+  it("will return items that are overdue or due in the next 24 Hours", () => {
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const dayAfterTomorrow = new Date();
+    dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
+    const item1 = itemFactory({ dueDate: today });
+    const item2 = itemFactory({ dueDate: tomorrow });
+    const item3 = itemFactory({ dueDate: dayAfterTomorrow });
+
+    const result = filterForTwentyFourHours([item1, item2, item3]);
+
+    expect(result).toEqual([item1, item2]);
+  });
+});
+
 describe("filterUpcomingItems", () => {
   it("will return items due after tomorrow", () => {
     const today = new Date();
@@ -112,5 +132,23 @@ describe("filterUpcomingItems", () => {
     const result = filterUpcomingItems([item1, item2, item3]);
 
     expect(result).toEqual([item3]);
+  });
+});
+
+describe("filterByLabels", () => {
+  it("will return items with any of the labels matching", () => {
+    const item1 = itemFactory({ labels: [] });
+    const item2 = itemFactory({ labels: ["social post"] });
+    const item3 = itemFactory({ labels: ["social post", "not a label"] });
+    const item4 = itemFactory({ labels: ["social post", "scs email"] });
+    const item5 = itemFactory({ labels: ["scs email", "not a label"] });
+    const item6 = itemFactory({ labels: ["not a label 1", "not a label 2"] });
+
+    const result = filterByLabel(
+      [item1, item2, item3, item4, item5, item6],
+      ["social post", "scs email"],
+    );
+
+    expect(result).toEqual([item2, item3, item4, item5]);
   });
 });

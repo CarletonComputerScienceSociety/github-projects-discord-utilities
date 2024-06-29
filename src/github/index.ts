@@ -23,6 +23,11 @@ export interface ProjectV2Item {
           url: string;
         }[];
       };
+      labels: {
+        nodes: {
+          name: string;
+        }[];
+      };
       name: string;
     }[];
   };

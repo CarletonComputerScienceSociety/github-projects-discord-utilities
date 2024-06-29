@@ -4,6 +4,7 @@ export interface Item {
   title: string;
   status: string;
   assignedUsers: string[];
+  labels?: string[];
   dueDate?: Date;
   url?: string;
 }
@@ -16,6 +17,9 @@ export const convertGithubItems = (items: ProjectV2Item[]): Item[] => {
     const status = item.fieldValues.nodes
       .filter((field) => field.name)
       .map((field) => field.name)[0];
+    const labels = item.fieldValues.nodes
+      .filter((field) => field.labels)
+      .flatMap((field) => field.labels.nodes.map((label) => label.name));
 
     // TODO: improve this
     let dueDate: Date | undefined;
@@ -28,6 +32,7 @@ export const convertGithubItems = (items: ProjectV2Item[]): Item[] => {
       title: item.content.title,
       url: item.content.url,
       assignedUsers,
+      labels,
       dueDate: dueDate,
       status: status,
     };
@@ -52,6 +57,24 @@ export const filterByDateRange = (
 export const filterForUrgentItems = (items: Item[]) => {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 2);
+
+  return items.filter((item) => {
+    if (!item.dueDate) {
+      return false;
+    }
+    return (
+      item.dueDate <= tomorrow &&
+      item.status !== "Done" &&
+      item.assignedUsers.length !== 0
+    );
+  });
+};
+
+//for reminders ran at 8:30pm (midnight in UTC) checking the next 24 hours will pull up tasks
+//due the next day
+export const filterForTwentyFourHours = (items: Item[]) => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
 
   return items.filter((item) => {
     if (!item.dueDate) {
@@ -91,4 +114,10 @@ export const filterOutStatus = (items: Item[], status: string) => {
 
 export const filterForUnassigned = (items: Item[]) => {
   return items.filter((item) => item.assignedUsers.length === 0);
+};
+
+export const filterByLabel = (items: Item[], labels: string[]) => {
+  return items.filter((item) =>
+    labels.some((label) => item.labels?.includes(label)),
+  );
 };
