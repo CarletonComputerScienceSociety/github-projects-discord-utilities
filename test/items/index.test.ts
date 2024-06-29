@@ -113,7 +113,6 @@ describe("filterForTwentyFourHours", () => {
     const item3 = itemFactory({ dueDate: dayAfterTomorrow });
 
     const result = filterForTwentyFourHours([item1, item2, item3]);
-
     expect(result).toEqual([item1, item2]);
   });
 });
