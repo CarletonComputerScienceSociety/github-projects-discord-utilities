@@ -58,7 +58,7 @@ const githubUrlToDiscordId = (githubUrl: string) => {
 };
 
 const formatDiscordDate = (date: Date) => {
-  return `<t:${Math.floor(date.getTime() / 1000)}>`;
+  return `<t:${Math.floor(date.getTime() / 1000)}:D>`;
 };
 
 const formatMessageTitle = (title: string, message: string) => {
