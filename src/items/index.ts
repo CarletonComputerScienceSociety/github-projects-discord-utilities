@@ -10,33 +10,43 @@ export interface Item {
 }
 
 export const convertGithubItems = (items: ProjectV2Item[]): Item[] => {
-  return items.map((item: ProjectV2Item) => {
-    const assignedUsers = item.fieldValues.nodes
-      .filter((field) => field.users)
-      .flatMap((field) => field.users.nodes.map((user) => user.url));
-    const status = item.fieldValues.nodes
-      .filter((field) => field.name)
-      .map((field) => field.name)[0];
-    const labels = item.fieldValues.nodes
-      .filter((field) => field.labels)
-      .flatMap((field) => field.labels.nodes.map((label) => label.name));
+  return items
+    .map((item: ProjectV2Item) => {
+      const assignedUsers = item.fieldValues.nodes
+        .filter((field) => field.users)
+        .flatMap((field) => field.users.nodes.map((user) => user.url));
+      const status = item.fieldValues.nodes
+        .filter((field) => field.name)
+        .map((field) => field.name)[0];
+      const labels = item.fieldValues.nodes
+        .filter((field) => field.labels)
+        .flatMap((field) => field.labels.nodes.map((label) => label.name));
 
-    // TODO: improve this
-    let dueDate: Date | undefined;
-    if (item.fieldValueByName?.date) {
-      dueDate = new Date(item.fieldValueByName.date);
-      dueDate.setDate(dueDate.getDate() + 1);
-    }
+      // TODO: improve this
+      let dueDate: Date | undefined;
+      if (item.fieldValueByName?.date) {
+        dueDate = new Date(item.fieldValueByName.date);
+        dueDate.setDate(dueDate.getDate() + 1);
+      }
 
-    return {
-      title: item.content.title,
-      url: item.content.url,
-      assignedUsers,
-      labels,
-      dueDate: dueDate,
-      status: status,
-    };
-  });
+      return {
+        title: item.content.title,
+        url: item.content.url,
+        assignedUsers,
+        labels,
+        dueDate: dueDate,
+        status: status,
+      };
+    })
+    .sort(sortByDate);
+};
+
+export const sortByDate = (item1: Item, item2: Item): number => {
+  if (item1.dueDate === undefined && item2.dueDate === undefined) return 0;
+  if (item1.dueDate === undefined) return 1;
+  if (item2.dueDate === undefined) return -1;
+  if (item1.dueDate === item2.dueDate) return 0;
+  return item1.dueDate < item2.dueDate ? -1 : 1;
 };
 
 export const filterByDateRange = (
