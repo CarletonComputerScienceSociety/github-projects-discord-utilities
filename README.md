@@ -52,10 +52,10 @@ npm run prod <jobname>
 
 ## Jobs
 
-| Job Name            | Description                                                       |
-| ------------------- | ----------------------------------------------------------------- |
-| `dailyTaskReminder` | Sends the reminder for upcoming tasks on a daily basis            |
-| `promotionReminder` | Sends the reminder promotional materials due in the next 24 hours |
+| Job Name            | Description                                                           |
+| ------------------- | --------------------------------------------------------------------- |
+| `dailyTaskReminder` | Sends the reminder for upcoming tasks on a daily basis                |
+| `promotionReminder` | Sends the reminder for promotional materials due in the next 24 hours |
 
 ## Notes
 
