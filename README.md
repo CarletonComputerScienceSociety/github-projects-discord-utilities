@@ -42,6 +42,7 @@ npm install -g dotenv-cli
 
 ```
 DISCORD_CHANNEL_WEBHOOK_URL=YOUR_WEBHOOK_URL_HERE
+GITHUB_ACCESS_TOKEN=(ask Matthew for this)
 ```
 
 7. Start the job:
