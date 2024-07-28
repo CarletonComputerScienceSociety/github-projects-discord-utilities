@@ -6,6 +6,7 @@ import {
   filterForUrgentItems,
   filterOutStatus,
 } from "../items";
+import { fetchFacts } from ".";
 
 export const dueTodayReminder = async () => {
   const githubItemsResult = await fetchProjectV2Items();
@@ -17,6 +18,9 @@ export const dueTodayReminder = async () => {
   const nonBacklogItems = filterOutStatus(items, "Backlog");
   const unassignedItems = filterForUnassigned(nonBacklogItems);
   const urgentItems = filterForUrgentItems(nonBacklogItems);
+
+  const factResult = await fetchFacts();
+  const fact = `${factResult}`;
 
   const message = {
     title: "Daily Task Reminder 🎉",
@@ -44,6 +48,7 @@ export const dueTodayReminder = async () => {
           ]
         : []),
     ],
+    fact: fact,
   };
 
   const discordMessageResult = await sendDiscordItemMessage(message);

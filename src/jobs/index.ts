@@ -5,7 +5,7 @@ import { promotionReminder } from "./promotionReminder";
 const program = new Command();
 
 program
-  .argument("<jobname>")
+  .arguments("<jobname>")
   .description("Run the desired job")
   .action((jobname) => {
     switch (jobname) {

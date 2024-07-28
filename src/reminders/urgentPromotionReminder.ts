@@ -6,6 +6,7 @@ import {
   filterForTwentyFourHours,
   filterOutStatus,
 } from "../items";
+import { fetchFacts } from ".";
 
 export const urgentPromotionReminder = async () => {
   const githubItemsResult = await fetchProjectV2Items();
@@ -27,6 +28,9 @@ export const urgentPromotionReminder = async () => {
     return null;
   }
 
+  const factResult = await fetchFacts();
+  const fact = `${factResult}`;
+
   const message = {
     title: "Urgent Promotional Items Reminder 📬‼️",
     message:
@@ -42,6 +46,7 @@ export const urgentPromotionReminder = async () => {
           ]
         : []),
     ],
+    fact: fact,
   };
 
   console.log("Sending promotion reminder");

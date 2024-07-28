@@ -14,6 +14,7 @@ export interface DiscordItemMessage {
     includeLinks: boolean;
   }[];
   message: string;
+  fact: string;
 }
 
 // TODO: any type
@@ -31,10 +32,11 @@ export const sendDiscordItemMessage = async (
       .join("\n");
     return `${sectionHeader} ${sectionItems}`;
   });
+  const messageFact = formatFact(message.fact);
 
   try {
     const response = await axios.post(webhookUrl, {
-      content: `${messageHeader} ${messageSections.join()}`,
+      content: `${messageHeader} ${messageSections.join()} ${messageFact}`,
     });
     return Ok(response.data);
   } catch (error) {
@@ -67,6 +69,10 @@ const formatMessageTitle = (title: string, message: string) => {
 
 const formatMessageSectionTitle = (title: string) => {
   return `\n### ${title}: \n`;
+};
+
+const formatFact = (fact: string) => {
+  return `\n### 📚 Fun Fact: \n ${fact}!`;
 };
 
 const formatDiscordAssignees = (assignees: string[]) => {

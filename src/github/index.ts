@@ -1,6 +1,9 @@
 import axios from "axios";
 import { Ok, Err, Result } from "ts-results";
+import dotenv from "dotenv";
 import { PROJECT_V2_ITEMS } from "./graphql";
+
+dotenv.config();
 
 // TODO: improve this
 export interface ProjectV2Item {
@@ -45,8 +48,7 @@ export const fetchProjectV2Items = async (): Promise<
 };
 
 // TODO: move to .env (it's fine for now because it only has read access)
-const TOKEN =
-  "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";
+const TOKEN = process.env.GITHUB_ACCESS_TOKEN ?? "";
 
 const fetchData = async (): Promise<Result<any, Error>> => {
   try {
