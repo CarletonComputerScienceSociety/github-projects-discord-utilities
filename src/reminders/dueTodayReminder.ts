@@ -18,8 +18,12 @@ export const dueTodayReminder = async () => {
   const unassignedItems = filterForUnassigned(nonBacklogItems);
   const urgentItems = filterForUrgentItems(nonBacklogItems);
 
+  const dayOfWeek = new Date().getDay();
+  const emojis = ['🌞', '🌝', '📅', '⭐', '🔮', '🎉', '🌅'];
+  const dayEmoji = emojis[dayOfWeek];
+
   const message = {
-    title: "Daily Task Reminder 🎉",
+    title: `Daily Task Reminder ${dayEmoji}`,
     message:
       urgentItems.length === 0 && unassignedItems.length === 0
         ? "Nothing urgent or unassigned today! 🐀🥂"
