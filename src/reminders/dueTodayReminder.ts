@@ -19,7 +19,7 @@ export const dueTodayReminder = async () => {
   const urgentItems = filterForUrgentItems(nonBacklogItems);
 
   const dayOfWeek = new Date().getDay();
-  const emojis = ['🌞', '🌝', '📅', '⭐', '🔮', '🎉', '🌅'];
+  const emojis = ["🌞", "🌝", "📅", "⭐", "🔮", "🎉", "🌅"];
   const dayEmoji = emojis[dayOfWeek];
 
   const message = {
