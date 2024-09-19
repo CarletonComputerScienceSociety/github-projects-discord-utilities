@@ -27,7 +27,7 @@ export const fullItemReportReminder = async () => {
       upcomingItems.length &&
       unassignedItems.length === 0
         ? "Nothing urgent or unassigned upcoming! 🐀🥂"
-        : "Checkout all upcoming tasks [here.](https://github.com/orgs/CarletonComputerScienceSociety/projects/18) 🐀🐀",
+        : "Check out all upcoming tasks [here.](https://github.com/orgs/CarletonComputerScienceSociety/projects/18) 🐀🐀",
     sections: [
       ...(urgentItems.length > 0
         ? [
