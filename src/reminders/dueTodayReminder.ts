@@ -87,7 +87,7 @@ export const dueTodayReminder = async () => {
     message:
       urgentItems.length === 0 && unassignedItems.length === 0
         ? "Nothing urgent or unassigned today! 🐀🥂"
-        : "Checkout all upcoming tasks [here.](https://github.com/orgs/CarletonComputerScienceSociety/projects/18) 👀",
+        : "Check out all upcoming tasks [here.](https://github.com/orgs/CarletonComputerScienceSociety/projects/18) 👀",
     sections: [
       ...(urgentItems.length > 0
         ? [
