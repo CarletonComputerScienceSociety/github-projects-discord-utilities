@@ -10,7 +10,6 @@ import {
   filterUpcomingItems,
 } from "../../src/items";
 import { itemFactory } from "./factories/item-factory";
-import exp from "constants";
 
 describe("filterByStatus", () => {
   it("will return items with the given status", () => {

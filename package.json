@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npx tsc",
-    "test": "npx jest",
+    "test": "npx jest --testPathIgnorePatterns=dist/",
     "job": "node dist/src/jobs/index.js",
     "prod": "npm run build && npm run job",
     "dev": "nodemon src/jobs/dailyTaskReminder.ts",
