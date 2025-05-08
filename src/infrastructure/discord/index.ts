@@ -1,8 +1,8 @@
 import axios from "axios";
 import { Err, Ok, Result } from "ts-results";
 import dotenv from "dotenv";
-import githubDiscordMap from "../../data/githubDiscordMap.json";
-import { Item } from "../items";
+import githubDiscordMap from "../../../data/githubDiscordMap.json";
+import { Item } from "../../items";
 
 dotenv.config();
 

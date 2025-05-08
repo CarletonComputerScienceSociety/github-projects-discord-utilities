@@ -1,7 +1,6 @@
-import { sendDiscordItemMessage } from "../discord";
-import { fetchProjectV2Items } from "../github";
+import { sendDiscordItemMessage } from "../infrastructure/discord";
+import { fetchProjectV2Items } from "../infrastructure/github";
 import {
-  convertGithubItems,
   filterByLabel,
   filterForTwentyFourHours,
   filterOutStatus,
@@ -13,8 +12,7 @@ export const urgentPromotionReminder = async () => {
     return githubItemsResult;
   }
 
-  const items = convertGithubItems(githubItemsResult.val);
-  const nonBacklogItems = filterOutStatus(items, "Backlog");
+  const nonBacklogItems = filterOutStatus(githubItemsResult.val, "Backlog");
   const urgentItems = filterForTwentyFourHours(nonBacklogItems);
   const itemsWithLabels = filterByLabel(urgentItems, [
     "discord announcement",

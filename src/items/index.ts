@@ -1,5 +1,3 @@
-import { ProjectV2Item } from "../github";
-
 export interface Item {
   title: string;
   status: string;
@@ -8,36 +6,6 @@ export interface Item {
   dueDate?: Date;
   url?: string;
 }
-
-export const convertGithubItems = (items: ProjectV2Item[]): Item[] => {
-  return items.map((item: ProjectV2Item) => {
-    const assignedUsers = item.fieldValues.nodes
-      .filter((field) => field.users)
-      .flatMap((field) => field.users.nodes.map((user) => user.url));
-    const status = item.fieldValues.nodes
-      .filter((field) => field.name)
-      .map((field) => field.name)[0];
-    const labels = item.fieldValues.nodes
-      .filter((field) => field.labels)
-      .flatMap((field) => field.labels.nodes.map((label) => label.name));
-
-    // TODO: improve this
-    let dueDate: Date | undefined;
-    if (item.fieldValueByName?.date) {
-      dueDate = new Date(item.fieldValueByName.date);
-      dueDate.setDate(dueDate.getDate() + 1);
-    }
-
-    return {
-      title: item.content.title,
-      url: item.content.url,
-      assignedUsers,
-      labels,
-      dueDate: dueDate,
-      status: status,
-    };
-  });
-};
 
 export const filterByDateRange = (
   items: Item[],
