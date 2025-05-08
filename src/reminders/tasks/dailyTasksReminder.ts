@@ -10,6 +10,7 @@ import {
   filterOutStatus,
   filterUpcomingItems,
 } from "@src/items";
+import logger from "@config/logger";
 
 enum Day {
   Sunday,
@@ -22,6 +23,10 @@ enum Day {
 }
 
 export const dailyTasksReminder = async () => {
+  logger.info({
+    event: "dailyTasksReminder.start",
+  });
+
   const githubItemsResult = await fetchProjectV2Items();
   if (githubItemsResult.err) {
     return githubItemsResult;
@@ -44,6 +49,14 @@ export const dailyTasksReminder = async () => {
       });
 
   const discordMessageResult = await sendDiscordItemMessage(message);
+
+  if (discordMessageResult.ok) {
+    logger.info({
+      event: "dailyTasksReminder.success",
+      body: "Daily tasks reminder sent successfully.",
+    });
+  }
+
   return discordMessageResult;
 };
 

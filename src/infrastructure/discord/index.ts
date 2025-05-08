@@ -3,6 +3,7 @@ import { Err, Ok, Result } from "ts-results";
 import dotenv from "dotenv";
 import githubDiscordMap from "../../../data/githubDiscordMap.json";
 import { Item } from "../../items";
+import logger from "@config/logger";
 
 dotenv.config();
 
@@ -15,6 +16,16 @@ export interface DiscordItemMessage {
   }[];
   message: string;
 }
+
+export const sendDiscordAlertMessage = async (
+  message: string,
+): Promise<Result<any, Error>> => {
+  const alertWebhook = process.env.DISCORD_ALERTS_WEBHOOK_URL ?? "";
+  await axios.post(alertWebhook, {
+    content: `Failed to send Discord message: ${message}`,
+  });
+  return Ok("Alert sent");
+};
 
 // TODO: any type
 export const sendDiscordItemMessage = async (
@@ -38,11 +49,9 @@ export const sendDiscordItemMessage = async (
     });
     return Ok(response.data);
   } catch (error) {
-    const alertWebhook =
-      "https://discord.com/api/webhooks/1255153467937390703/5v_7sPhvtFT3mtNPgogL1jcl56z6n2KHyjT1rCNf6wZ4vPFCAvrtr65fFVY562m48Znn";
-    await axios.post(alertWebhook, {
-      // @ts-ignore
-      content: `Failed to send Discord message: ${error.message}`,
+    logger.error({
+      event: "github.fetchProjectV2Items.error",
+      body: error instanceof Error ? error.message : "Failed to fetch data",
     });
     return Err(new Error("Failed to send Discord message"));
   }

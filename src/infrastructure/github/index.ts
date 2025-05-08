@@ -3,6 +3,7 @@ import { Ok, Err, Result } from "ts-results";
 import dotenv from "dotenv";
 import { PROJECT_V2_ITEMS } from "./graphql";
 import { Item } from "../../items";
+import logger from "@config/logger";
 
 dotenv.config();
 
@@ -66,6 +67,10 @@ const fetchData = async (): Promise<Result<any, Error>> => {
     );
     return Ok(response.data);
   } catch (error) {
+    logger.error({
+      event: "github.fetchProjectV2Items.error",
+      body: error instanceof Error ? error.message : "Failed to fetch data",
+    });
     return Err(new Error("Failed to fetch data"));
   }
 };

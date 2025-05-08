@@ -6,8 +6,13 @@ import {
   filterForTwentyFourHours,
   filterOutStatus,
 } from "@src/items";
+import logger from "@config/logger";
 
 export const promotionReminder = async () => {
+  logger.info({
+    event: "promotionReminder.start",
+  });
+
   const githubItemsResult = await fetchProjectV2Items();
   if (githubItemsResult.err) {
     return githubItemsResult;
@@ -22,6 +27,10 @@ export const promotionReminder = async () => {
   ]);
 
   if (itemsWithLabels.length === 0) {
+    logger.info({
+      event: "promotionReminder.noItems",
+      body: "No items found for promotion reminder.",
+    });
     return null;
   }
 
@@ -30,5 +39,13 @@ export const promotionReminder = async () => {
   });
 
   const discordMessageResult = await sendDiscordItemMessage(message);
+
+  if (discordMessageResult.ok) {
+    logger.info({
+      event: "promotionReminder.success",
+      body: "Promotion reminder sent successfully.",
+    });
+  }
+
   return discordMessageResult;
 };

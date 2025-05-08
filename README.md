@@ -41,6 +41,7 @@ npm install -g dotenv-cli
 6. Create a `.env` file with the webhook url
 
 ```
+DISCORD_ALERTS_WEBHOOK_URL=YOUR_WEBHOOK_URL_HERE
 DISCORD_CHANNEL_WEBHOOK_URL=YOUR_WEBHOOK_URL_HERE
 GITHUB_ACCESS_TOKEN=(ask Matthew for this)
 ```
