@@ -5,9 +5,9 @@ interface Props {
   promotionItems: Item[];
 }
 
-export const urgentPromotionMessage = ({
+export const urgentPromotionMessage = async ({
   promotionItems,
-}: Props): DiscordItemMessage => {
+}: Props): Promise<DiscordItemMessage> => {
   return {
     title: "Urgent Promotional Items Reminder 📬‼️",
     message:

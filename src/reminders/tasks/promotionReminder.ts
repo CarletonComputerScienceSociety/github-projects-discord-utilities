@@ -34,7 +34,7 @@ export const promotionReminder = async () => {
     return null;
   }
 
-  const message = urgentPromotionMessage({
+  const message = await urgentPromotionMessage({
     promotionItems: itemsWithLabels,
   });
 

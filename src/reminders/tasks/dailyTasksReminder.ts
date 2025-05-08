@@ -38,12 +38,12 @@ export const dailyTasksReminder = async () => {
   const urgentItems = filterForUrgentItems(nonBacklogItems);
 
   const message = isCompleteReportDay()
-    ? completeTaskReportMessage({
+    ? await completeTaskReportMessage({
         urgentItems,
         unassignedItems,
         upcomingItems,
       })
-    : simpleTaskReportMessage({
+    : await simpleTaskReportMessage({
         urgentItems,
         unassignedItems,
       });

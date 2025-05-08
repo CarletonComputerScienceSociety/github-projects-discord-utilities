@@ -3,12 +3,12 @@ import { itemFactory } from "../../factories/itemFactory";
 import { Item } from "@src/items";
 
 describe("completeTaskReportMessage", () => {
-  it("will show the default message when there are no urgent or unassigned items", () => {
+  it("will show the default message when there are no urgent or unassigned items", async () => {
     const urgentItems: Item[] = [];
     const unassignedItems: Item[] = [];
     const upcomingItems: Item[] = [itemFactory()];
 
-    const result = completeTaskReportMessage({
+    const result = await completeTaskReportMessage({
       urgentItems,
       unassignedItems,
       upcomingItems,
@@ -25,12 +25,12 @@ describe("completeTaskReportMessage", () => {
     ]);
   });
 
-  it("will include the urgent section when there are urgent items", () => {
+  it("will include the urgent section when there are urgent items", async () => {
     const urgentItems: Item[] = [itemFactory()];
     const unassignedItems: Item[] = [];
     const upcomingItems: Item[] = [];
 
-    const result = completeTaskReportMessage({
+    const result = await completeTaskReportMessage({
       urgentItems,
       unassignedItems,
       upcomingItems,
@@ -46,12 +46,12 @@ describe("completeTaskReportMessage", () => {
     ]);
   });
 
-  it("will include the unassigned section when there are unassigned items", () => {
+  it("will include the unassigned section when there are unassigned items", async () => {
     const urgentItems: Item[] = [];
     const unassignedItems: Item[] = [itemFactory()];
     const upcomingItems: Item[] = [];
 
-    const result = completeTaskReportMessage({
+    const result = await completeTaskReportMessage({
       urgentItems,
       unassignedItems,
       upcomingItems,
@@ -66,12 +66,12 @@ describe("completeTaskReportMessage", () => {
     ]);
   });
 
-  it("includes all sections when all item types are present", () => {
+  it("includes all sections when all item types are present", async () => {
     const urgentItems: Item[] = [itemFactory()];
     const unassignedItems: Item[] = [itemFactory()];
     const upcomingItems: Item[] = [itemFactory()];
 
-    const result = completeTaskReportMessage({
+    const result = await completeTaskReportMessage({
       urgentItems,
       unassignedItems,
       upcomingItems,
@@ -96,8 +96,8 @@ describe("completeTaskReportMessage", () => {
     ]);
   });
 
-  it("returns no sections and default message when all item arrays are empty", () => {
-    const result = completeTaskReportMessage({
+  it("returns no sections and default message when all item arrays are empty", async () => {
+    const result = await completeTaskReportMessage({
       urgentItems: [],
       unassignedItems: [],
       upcomingItems: [],

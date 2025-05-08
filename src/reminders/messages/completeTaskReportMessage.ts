@@ -7,21 +7,25 @@ interface Props {
   upcomingItems: Item[];
 }
 
-export const completeTaskReportMessage = ({
+export const completeTaskReportMessage = async ({
   urgentItems,
   unassignedItems,
   upcomingItems,
-}: Props): DiscordItemMessage => {
+}: Props): Promise<DiscordItemMessage> => {
+  const hasUrgent = urgentItems.length > 0;
+  const hasUpcoming = upcomingItems.length > 0;
+  const hasUnassigned = unassignedItems.length > 0;
+
+  const baseMessage =
+    !hasUrgent && hasUpcoming && !hasUnassigned
+      ? "Nothing urgent or unassigned upcoming! 🐀🥂"
+      : "Check out all upcoming tasks [here.](https://github.com/orgs/CarletonComputerScienceSociety/projects/18) 🐀🐀";
+
   return {
     title: "Biweekly Tasks Reminder ☀️🌱",
-    message:
-      urgentItems.length === 0 &&
-      upcomingItems.length &&
-      unassignedItems.length === 0
-        ? "Nothing urgent or unassigned upcoming! 🐀🥂"
-        : "Check out all upcoming tasks [here.](https://github.com/orgs/CarletonComputerScienceSociety/projects/18) 🐀🐀",
+    message: `${baseMessage}`,
     sections: [
-      ...(urgentItems.length > 0
+      ...(hasUrgent
         ? [
             {
               title: "🔥 Urgent & Overdue",
@@ -30,7 +34,7 @@ export const completeTaskReportMessage = ({
             },
           ]
         : []),
-      ...(upcomingItems.length > 0
+      ...(hasUpcoming
         ? [
             {
               title: "📅 Assigned Items",
@@ -39,7 +43,7 @@ export const completeTaskReportMessage = ({
             },
           ]
         : []),
-      ...(unassignedItems.length > 0
+      ...(hasUnassigned
         ? [
             {
               title: "📥  Unassigned Items",
