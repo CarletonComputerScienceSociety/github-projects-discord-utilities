@@ -1,16 +1,15 @@
 import { Command } from "commander";
-import { dailyTaskReminder } from "./dailyTaskReminder";
-import { promotionReminder } from "./promotionReminder";
+import { dailyTasksReminder, promotionReminder } from "./reminders/tasks";
 
 const program = new Command();
 
 program
-  .argument("<jobname>")
+  .argument("<task name>")
   .description("Run the desired job")
   .action((jobname) => {
     switch (jobname) {
-      case "dailyTaskReminder": {
-        dailyTaskReminder();
+      case "dailyTasksReminder": {
+        dailyTasksReminder();
         break;
       }
       case "promotionReminder": {

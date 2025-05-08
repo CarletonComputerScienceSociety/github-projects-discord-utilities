@@ -7,7 +7,7 @@
     "build": "npx tsc",
     "test": "npx jest --testPathIgnorePatterns=dist/",
     "job": "node dist/src/jobs/index.js",
-    "prod": "npx ts-node -r tsconfig-paths/register src/jobs/index.ts",
+    "task": "npx ts-node -r tsconfig-paths/register src/tasks.ts",
     "dev": "nodemon src/jobs/dailyTaskReminder.ts",
     "check": "prettier --check '**/*.{css,scss,html,js,md,ts,tsx}'",
     "format": "prettier --write '**/*.{css,scss,html,js,md,ts,tsx}'"

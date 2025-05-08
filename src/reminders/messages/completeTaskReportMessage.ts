@@ -1,24 +1,18 @@
-import { sendDiscordItemMessage } from "../infrastructure/discord";
-import { fetchProjectV2Items } from "../infrastructure/github";
-import {
-  filterForUnassigned,
-  filterForUrgentItems,
-  filterOutStatus,
-  filterUpcomingItems,
-} from "../items";
+import { DiscordItemMessage } from "@infrastructure/discord";
+import { Item } from "@src/items";
 
-export const fullItemReportReminder = async () => {
-  const githubItemsResult = await fetchProjectV2Items();
-  if (githubItemsResult.err) {
-    return githubItemsResult;
-  }
+interface Props {
+  urgentItems: Item[];
+  unassignedItems: Item[];
+  upcomingItems: Item[];
+}
 
-  const nonBacklogItems = filterOutStatus(githubItemsResult.val, "Backlog");
-  const unassignedItems = filterForUnassigned(nonBacklogItems);
-  const upcomingItems = filterUpcomingItems(nonBacklogItems);
-  const urgentItems = filterForUrgentItems(nonBacklogItems);
-
-  const message = {
+export const completeTaskReportMessage = ({
+  urgentItems,
+  unassignedItems,
+  upcomingItems,
+}: Props): DiscordItemMessage => {
+  return {
     title: "Biweekly Tasks Reminder ☀️🌱",
     message:
       urgentItems.length === 0 &&
@@ -56,7 +50,4 @@ export const fullItemReportReminder = async () => {
         : []),
     ],
   };
-
-  const discordMessageResult = await sendDiscordItemMessage(message);
-  return discordMessageResult;
 };
