@@ -9,7 +9,7 @@ import {
   filterOutStatus,
   filterUpcomingItems,
 } from "@src/items";
-import { itemFactory } from "./factories/itemFactory";
+import { itemFactory } from "../factories/itemFactory";
 
 describe("filterByStatus", () => {
   it("will return items with the given status", () => {
