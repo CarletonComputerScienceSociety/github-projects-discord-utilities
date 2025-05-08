@@ -22,7 +22,6 @@ export const promotionReminder = async () => {
   ]);
 
   if (itemsWithLabels.length === 0) {
-    console.log("No urgent promotion items");
     return null;
   }
 
