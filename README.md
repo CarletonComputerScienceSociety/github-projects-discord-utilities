@@ -49,7 +49,7 @@ GITHUB_ACCESS_TOKEN=(ask Matthew for this)
 7. Start the task:
 
 ```
-npm run prod <task name>
+npm run task <task name>
 ```
 
 ## Tasks
