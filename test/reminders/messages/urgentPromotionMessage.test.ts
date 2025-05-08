@@ -8,7 +8,7 @@ describe("urgentPromotionMessage", () => {
 
     expect(result.title).toBe("Urgent Promotional Items Reminder 📬‼️");
     expect(result.message).toBe(
-      "Check out all upcoming tasks [here.](https://github.com/orgs/CarletonComputerScienceSociety/projects/18) 🦆"
+      "Check out all upcoming tasks [here.](https://github.com/orgs/CarletonComputerScienceSociety/projects/18) 🦆",
     );
     expect(result.sections).toEqual([]);
   });

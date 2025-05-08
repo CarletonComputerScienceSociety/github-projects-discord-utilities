@@ -4,7 +4,7 @@ import { itemFactory } from "../../factories/itemFactory";
 
 // Mock @src/constants and override EMOJIS
 jest.mock("@src/constants", () => ({
-    EMOJIS: ["🧪"],
+  EMOJIS: ["🧪"],
 }));
 
 describe("simpleTaskReportMessage", () => {
