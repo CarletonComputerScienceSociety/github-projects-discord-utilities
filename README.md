@@ -45,18 +45,18 @@ DISCORD_CHANNEL_WEBHOOK_URL=YOUR_WEBHOOK_URL_HERE
 GITHUB_ACCESS_TOKEN=(ask Matthew for this)
 ```
 
-7. Start the job:
+7. Start the task:
 
 ```
-npm run prod <jobname>
+npm run prod <task name>
 ```
 
-## Jobs
+## Tasks
 
-| Job Name            | Description                                                           |
-| ------------------- | --------------------------------------------------------------------- |
-| `dailyTaskReminder` | Sends the reminder for upcoming tasks on a daily basis                |
-| `promotionReminder` | Sends the reminder for promotional materials due in the next 24 hours |
+| Task Name            | Description                                                           |
+| -------------------- | --------------------------------------------------------------------- |
+| `dailyTasksReminder` | Sends the reminder for upcoming tasks on a daily basis                |
+| `promotionReminder`  | Sends the reminder for promotional materials due in the next 24 hours |
 
 ## Notes
 
