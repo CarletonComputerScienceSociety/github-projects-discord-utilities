@@ -1,4 +1,4 @@
-import { Item } from "../../../src/items";
+import { Item } from "@src/items";
 
 export const itemFactory = ({
   title,

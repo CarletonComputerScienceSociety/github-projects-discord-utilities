@@ -1,5 +1,5 @@
-import { sendDiscordItemMessage } from "../infrastructure/discord";
-import { fetchProjectV2Items } from "../infrastructure/github";
+import { sendDiscordItemMessage } from "@infrastructure/discord";
+import { fetchProjectV2Items } from "@infrastructure/github";
 import {
   filterForUnassigned,
   filterForUrgentItems,

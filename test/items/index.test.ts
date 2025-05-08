@@ -8,7 +8,7 @@ import {
   filterForUrgentItems,
   filterOutStatus,
   filterUpcomingItems,
-} from "../../src/items";
+} from "@src/items";
 import { itemFactory } from "./factories/item-factory";
 
 describe("filterByStatus", () => {
