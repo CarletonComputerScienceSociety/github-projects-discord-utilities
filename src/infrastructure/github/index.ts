@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Ok, Err, Result } from "ts-results";
 import dotenv from "dotenv";
-import { PROJECT_V2_ITEMS } from "./graphql";
+import { CREATE_ISSUE_WITH_PROJECT, PROJECT_V2_ITEMS } from "./graphql";
 import { Item } from "../../items";
 import logger from "@config/logger";
 
@@ -107,10 +107,56 @@ const convertGithubItems = (items: ProjectV2Item[]) => {
     .sort(sortByDate);
 };
 
-export const sortByDate = (item1: Item, item2: Item): number => {
+const sortByDate = (item1: Item, item2: Item): number => {
   if (item1.dueDate === undefined && item2.dueDate === undefined) return 0;
   if (item1.dueDate === undefined) return 1;
   if (item2.dueDate === undefined) return -1;
   if (item1.dueDate === item2.dueDate) return 0;
   return item1.dueDate < item2.dueDate ? -1 : 1;
+};
+const REPO_ID = "R_kgDOLyx0yw"; // hardcoded repository GraphQL ID
+// const PROJECT_ID = "PVT_kwDOABL5c84Ag5Rq"; // hardcoded ProjectV2 ID
+export const createIssue = async ({
+  title,
+  description,
+  dueDate,
+}: {
+  title: string;
+  description: string;
+  dueDate: Date;
+}): Promise<Result<any, Error>> => {
+  try {
+    const response = await axios.post(
+      "https://api.github.com/graphql",
+      {
+        query: CREATE_ISSUE_WITH_PROJECT,
+        variables: {
+          repositoryId: REPO_ID,
+          title,
+          body: description,
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      },
+    );
+
+    if (response.data.errors) {
+      logger.error({
+        event: "github.createIssue.error",
+        body: response.data.errors.map((error: any) => error.message).join(", "),
+      });
+      return Err(new Error("Failed to create issue"));
+    }
+
+    return Ok(response.data.data.createIssue.issue);
+  } catch (error) {
+    logger.error({
+      event: "github.createIssue.error",
+      body: error instanceof Error ? error.message : "Unknown error",
+    });
+    return Err(new Error("Failed to create issue"));
+  }
 };

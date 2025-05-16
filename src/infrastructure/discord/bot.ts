@@ -1,15 +1,30 @@
-import { Client, GatewayIntentBits, Events } from "discord.js";
+import {
+  Client,
+  GatewayIntentBits,
+  Events,
+  UserSelectMenuBuilder,
+  ActionRowBuilder,
+} from "discord.js";
 import { config } from "dotenv";
 import fs from "fs";
 import path from "path";
+import {
+  handleModalSubmit,
+  handleAssigneeSelect,
+} from "./commands/createIssue";
 
 config();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 const commands = new Map<string, any>();
-const commandFiles = fs.readdirSync(path.join(__dirname, "commands"));
+const tempIssueData: Record<
+  string,
+  { title: string; description: string; dueDate: string }
+> = {};
 
+// Load slash commands
+const commandFiles = fs.readdirSync(path.join(__dirname, "commands"));
 (async () => {
   for (const file of commandFiles) {
     const command = await import(`./commands/${file}`);
@@ -22,19 +37,33 @@ client.once(Events.ClientReady, (c) => {
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
+  if (interaction.isChatInputCommand()) {
+    const command = commands.get(interaction.commandName);
+    if (!command) return;
 
-  const command = commands.get(interaction.commandName);
-  if (!command) return;
+    try {
+      await command.execute(interaction);
+    } catch (error) {
+      console.error(error);
+      await interaction.reply({
+        content: "There was an error executing this command.",
+        ephemeral: true,
+      });
+    }
+  }
 
-  try {
-    await command.execute(interaction);
-  } catch (error) {
-    console.error(error);
-    await interaction.reply({
-      content: "There was an error executing this command.",
-      ephemeral: true,
-    });
+  if (
+    interaction.isModalSubmit() &&
+    interaction.customId === "create-issue:modal"
+  ) {
+    await handleModalSubmit(interaction);
+  }
+
+  if (
+    interaction.isUserSelectMenu() &&
+    interaction.customId === "create-issue:assigneeSelect"
+  ) {
+    await handleAssigneeSelect(interaction);
   }
 });
 
