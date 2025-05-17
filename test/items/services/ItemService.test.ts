@@ -1,7 +1,10 @@
 import { ItemService } from "@src/items/services";
 import { GithubAPI } from "@infrastructure/github";
 import { Ok, Err } from "ts-results";
-import { PROJECT_ID, DUE_DATE_FIELD_ID } from "@infrastructure/github/constants";
+import {
+  PROJECT_ID,
+  DUE_DATE_FIELD_ID,
+} from "@infrastructure/github/constants";
 
 jest.mock("@infrastructure/github", () => ({
   GithubAPI: {
@@ -27,11 +30,17 @@ describe("create", () => {
   it("will return success if all steps succeed", async () => {
     (GithubAPI.createIssue as jest.Mock).mockResolvedValue(Ok(mockIssue));
     (GithubAPI.addIssueToProject as jest.Mock).mockResolvedValue(Ok(mockItem));
-    (GithubAPI.updateProjectItemDueDate as jest.Mock).mockResolvedValue(mockSuccessResult);
+    (GithubAPI.updateProjectItemDueDate as jest.Mock).mockResolvedValue(
+      mockSuccessResult,
+    );
 
     const result = await ItemService.create({ title, description, dueDate });
 
-    expect(GithubAPI.createIssue).toHaveBeenCalledWith({ title, description, dueDate });
+    expect(GithubAPI.createIssue).toHaveBeenCalledWith({
+      title,
+      description,
+      dueDate,
+    });
     expect(GithubAPI.addIssueToProject).toHaveBeenCalledWith({
       issueId: mockIssue.id,
       projectId: PROJECT_ID,
@@ -74,7 +83,9 @@ describe("create", () => {
     const error = new Error("updateProjectItemDueDate failed");
     (GithubAPI.createIssue as jest.Mock).mockResolvedValue(Ok(mockIssue));
     (GithubAPI.addIssueToProject as jest.Mock).mockResolvedValue(Ok(mockItem));
-    (GithubAPI.updateProjectItemDueDate as jest.Mock).mockResolvedValue(Err(error));
+    (GithubAPI.updateProjectItemDueDate as jest.Mock).mockResolvedValue(
+      Err(error),
+    );
 
     const result = await ItemService.create({ title, description, dueDate });
 
