@@ -1,4 +1,4 @@
-import { fetchProjectV2Items } from "@infrastructure/github";
+import { GithubAPI } from "@infrastructure/github";
 import {
   completeTaskReportMessage,
   simpleTaskReportMessage,
@@ -27,7 +27,7 @@ export const dailyTasksReminder = async () => {
     event: "dailyTasksReminder.start",
   });
 
-  const githubItemsResult = await fetchProjectV2Items();
+  const githubItemsResult = await GithubAPI.fetchProjectV2Items();
   if (githubItemsResult.err) {
     return githubItemsResult;
   }

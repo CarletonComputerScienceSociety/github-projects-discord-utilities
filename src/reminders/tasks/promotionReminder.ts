@@ -1,4 +1,4 @@
-import { fetchProjectV2Items } from "@infrastructure/github";
+import { GithubAPI } from "@infrastructure/github";
 import { urgentPromotionMessage } from "../messages";
 import { sendDiscordItemMessage } from "@infrastructure/discord";
 import {
@@ -13,7 +13,7 @@ export const promotionReminder = async () => {
     event: "promotionReminder.start",
   });
 
-  const githubItemsResult = await fetchProjectV2Items();
+  const githubItemsResult = await GithubAPI.fetchProjectV2Items();
   if (githubItemsResult.err) {
     return githubItemsResult;
   }

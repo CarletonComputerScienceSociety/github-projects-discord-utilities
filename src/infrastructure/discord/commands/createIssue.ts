@@ -66,7 +66,7 @@ export async function handleModalSubmit(
     throw new Error("Invalid due date format. Please use yyyy-mm-dd.");
   }
 
-  const result = await ItemService.createItem({
+  const result = await ItemService.create({
     title,
     description,
     dueDate: new Date(dueDate),

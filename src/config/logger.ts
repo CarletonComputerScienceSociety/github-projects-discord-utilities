@@ -1,6 +1,5 @@
 import winston from "winston";
 import { sendDiscordAlertMessage } from "@infrastructure/discord";
-import { send } from "process";
 
 const base = winston.createLogger({
   level: "info",

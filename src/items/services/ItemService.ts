@@ -1,7 +1,7 @@
 import { Result } from "ts-results";
-import { createIssue } from "@infrastructure/github";
+import { GithubAPI } from "@infrastructure/github";
 
-export const createItem = async ({
+export const create = async ({
   title,
   description,
   dueDate,
@@ -10,10 +10,11 @@ export const createItem = async ({
   description: string;
   dueDate: Date;
 }): Promise<Result<any, Error>> => {
-  const result = await createIssue({
+  const result = await GithubAPI.createIssue({
     title,
     description,
     dueDate,
   });
+
   return result;
 };

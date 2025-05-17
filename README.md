@@ -144,3 +144,24 @@ Project Items Query
   }
 }
 ```
+
+Project Item Fields Query
+
+```
+{
+  organization(login: "CarletonComputerScienceSociety") {
+    projectV2(number: 18) {
+      fields(first: 100) {
+        nodes {
+          __typename
+          ... on ProjectV2FieldCommon {
+            id
+            name
+            dataType
+          }
+        }
+      }
+    }
+  }
+}
+```
