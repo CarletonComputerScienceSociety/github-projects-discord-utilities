@@ -63,12 +63,15 @@ const convertGithubItems = (items: ProjectV2Item[]) => {
       }
 
       return {
+        githubId: item.id,
         title: item.content.title,
         url: item.content.url,
         assignedUsers,
         labels,
         dueDate: dueDate,
         status: status,
+        createdAt: new Date(item.createdAt),
+        updatedAt: new Date(item.updatedAt),
       };
     })
     .sort(sortByDate);

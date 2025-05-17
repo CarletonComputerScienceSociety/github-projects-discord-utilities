@@ -16,6 +16,9 @@ export const itemFactory = ({
   url?: string;
 } = {}): Item => {
   return {
+    githubId: "githubId",
+    createdAt: new Date(),
+    updatedAt: new Date(),
     title: title ?? "title",
     status: status ?? "status",
     assignedUsers: assignedUsers ?? ["https://github.com/MathyouMB"],

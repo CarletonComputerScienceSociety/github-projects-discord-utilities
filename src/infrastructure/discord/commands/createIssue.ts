@@ -10,6 +10,7 @@ import {
 } from "discord.js";
 import { ModalSubmitInteraction } from "discord.js";
 import { ItemService } from "@src/items/services";
+import { can } from "../authz";
 
 export const data = new SlashCommandBuilder()
   .setName("create-issue")
@@ -18,6 +19,14 @@ export const data = new SlashCommandBuilder()
   );
 
 export async function execute(interaction: CommandInteraction) {
+  if (!can(interaction)) {
+    await interaction.reply({
+      content: "You do not have permission to create an issue.",
+      ephemeral: true,
+    });
+    return;
+  }
+
   const modal = new ModalBuilder()
     .setCustomId("create-issue:modal")
     .setTitle("Create New Issue");

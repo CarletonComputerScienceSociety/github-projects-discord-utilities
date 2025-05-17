@@ -1,10 +1,4 @@
-import {
-  Client,
-  GatewayIntentBits,
-  Events,
-  UserSelectMenuBuilder,
-  ActionRowBuilder,
-} from "discord.js";
+import { Client, GatewayIntentBits, Events } from "discord.js";
 import { config } from "dotenv";
 import fs from "fs";
 import path from "path";
@@ -12,6 +6,7 @@ import {
   handleModalSubmit,
   handleAssigneeSelect,
 } from "./commands/createIssue";
+import { handleButtonInteraction } from "./commands/unassignedIssues";
 
 config();
 
@@ -64,6 +59,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
     interaction.customId === "create-issue:assigneeSelect"
   ) {
     await handleAssigneeSelect(interaction);
+  }
+
+  if (interaction.isButton()) {
+    await handleButtonInteraction(interaction);
   }
 });
 

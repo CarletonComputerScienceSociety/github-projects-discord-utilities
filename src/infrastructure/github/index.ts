@@ -1,6 +1,8 @@
 // TODO: improve this
 export interface ProjectV2Item {
   id: string;
+  createdAt: string;
+  updatedAt: string;
   content: {
     title: string;
     url: string;
