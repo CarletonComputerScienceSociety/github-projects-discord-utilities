@@ -5,12 +5,11 @@ import {
   TextInputBuilder,
   TextInputStyle,
   ActionRowBuilder,
-  UserSelectMenuBuilder,
-  UserSelectMenuInteraction,
 } from "discord.js";
 import { ModalSubmitInteraction } from "discord.js";
 import { ItemService } from "@src/items/services";
 import { can } from "../authz";
+import { promptAssigneeSelection } from "../interactions";
 
 export const data = new SlashCommandBuilder()
   .setName("create-issue")
@@ -89,28 +88,5 @@ export async function handleModalSubmit(
     return;
   }
 
-  await interaction.reply({
-    content: "Select an assignee for this issue:",
-    components: [
-      new ActionRowBuilder<UserSelectMenuBuilder>().addComponents(
-        new UserSelectMenuBuilder()
-          .setCustomId("create-issue:assigneeSelect")
-          .setPlaceholder("Choose a user")
-          .setMinValues(1)
-          .setMaxValues(1),
-      ),
-    ],
-    ephemeral: true,
-  });
-}
-
-export async function handleAssigneeSelect(
-  interaction: UserSelectMenuInteraction,
-): Promise<void> {
-  const selectedUserId = interaction.values[0];
-
-  await interaction.update({
-    content: `**Assigned**: <@${selectedUserId}>`,
-    components: [],
-  });
+  await promptAssigneeSelection(interaction);
 }

@@ -1,14 +1,12 @@
 import {
   SlashCommandBuilder,
   CommandInteraction,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
 } from "discord.js";
 import { GithubAPI } from "@infrastructure/github";
 import logger from "@config/logger";
 import githubDiscordMapJson from "../../../../data/githubDiscordMap.json";
 import { can } from "../authz";
+import { buildIssueButtonRow } from "../builders";
 
 const githubDiscordMap: { [githubUsername: string]: string } =
   githubDiscordMapJson;
@@ -77,24 +75,7 @@ export async function execute(interaction: CommandInteraction) {
   for (const item of assignedItems.slice(0, 5)) {
     const link = item.url ?? "https://github.com/";
 
-    const buttons = new ActionRowBuilder<ButtonBuilder>().addComponents(
-      new ButtonBuilder()
-        .setCustomId(`issue:edit:${item.githubId}`)
-        .setLabel("Edit")
-        .setStyle(ButtonStyle.Primary),
-      new ButtonBuilder()
-        .setCustomId(`issue:unassign:${item.githubId}`)
-        .setLabel("Unassign")
-        .setStyle(ButtonStyle.Secondary),
-      new ButtonBuilder()
-        .setCustomId(`issue:delete:${item.githubId}`)
-        .setLabel("Delete")
-        .setStyle(ButtonStyle.Danger),
-      new ButtonBuilder()
-        .setLabel("Open")
-        .setStyle(ButtonStyle.Link)
-        .setURL(link),
-    );
+    const buttons = buildIssueButtonRow(item.githubId, link, ["unassign", "open"]);
 
     await interaction.followUp({
       content: `## ${item.title}`,

@@ -1,16 +1,9 @@
-import {
-  SlashCommandBuilder,
-  CommandInteraction,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  Interaction,
-  CacheType,
-} from "discord.js";
+import { SlashCommandBuilder, CommandInteraction } from "discord.js";
 import { GithubAPI } from "@infrastructure/github";
 import { filterForUnassigned } from "@src/items";
 import logger from "@config/logger";
 import { can } from "../authz";
+import { buildIssueButtonRow } from "../builders";
 
 export const data = new SlashCommandBuilder()
   .setName("unassigned-issues")
@@ -83,24 +76,10 @@ export async function execute(interaction: CommandInteraction) {
   for (const item of limitedItems) {
     const link = item.url ?? "https://github.com/";
 
-    const buttons = new ActionRowBuilder<ButtonBuilder>().addComponents(
-      new ButtonBuilder()
-        .setCustomId(`issue:edit:${item.githubId}`)
-        .setLabel("Edit")
-        .setStyle(ButtonStyle.Primary),
-      new ButtonBuilder()
-        .setCustomId(`issue:assign:${item.githubId}`)
-        .setLabel("Assign")
-        .setStyle(ButtonStyle.Secondary),
-      new ButtonBuilder()
-        .setCustomId(`issue:delete:${item.githubId}`)
-        .setLabel("Delete")
-        .setStyle(ButtonStyle.Danger),
-      new ButtonBuilder()
-        .setLabel("Open")
-        .setStyle(ButtonStyle.Link)
-        .setURL(link),
-    );
+    const buttons = buildIssueButtonRow(item.githubId, link, [
+      "assign",
+      "open",
+    ]);
 
     await interaction.followUp({
       content: `## ${item.title}`,
@@ -113,50 +92,4 @@ export async function execute(interaction: CommandInteraction) {
     event: "unassignedIssues.success",
     body: `${unassignedItems.length} unassigned issues returned.`,
   });
-}
-
-export async function handleButtonInteraction(
-  interaction: Interaction<CacheType>,
-) {
-  if (!interaction.isButton()) return;
-
-  const [_issue, action, githubId] = interaction.customId.split(":");
-
-  if (!githubId) {
-    await interaction.reply({
-      content: "⚠️ Invalid button ID.",
-      ephemeral: true,
-    });
-    return;
-  }
-
-  switch (action) {
-    case "edit":
-      await interaction.reply({
-        content: `✏️ Editing issue with ID \`${githubId}\` (not yet implemented).`,
-        ephemeral: true,
-      });
-      break;
-
-    case "assign":
-      await interaction.reply({
-        content: `👤 Assigning you to issue \`${githubId}\` (not yet implemented).`,
-        ephemeral: true,
-      });
-      break;
-
-    case "delete":
-      await interaction.reply({
-        content: `🗑️ Deleting issue \`${githubId}\` (not yet implemented).`,
-        ephemeral: true,
-      });
-      break;
-
-    default:
-      // logger.warn({ event: "button.unknownAction", action });
-      await interaction.reply({
-        content: `❌ Unknown action: \`${action}\``,
-        ephemeral: true,
-      });
-  }
 }

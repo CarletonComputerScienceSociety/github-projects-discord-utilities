@@ -2,11 +2,11 @@ import { Client, GatewayIntentBits, Events } from "discord.js";
 import { config } from "dotenv";
 import fs from "fs";
 import path from "path";
+import { handleModalSubmit } from "./commands/createIssue";
 import {
-  handleModalSubmit,
-  handleAssigneeSelect,
-} from "./commands/createIssue";
-import { handleButtonInteraction } from "./commands/unassignedIssues";
+  assigneeSelectInteraction,
+  issueButtonInteraction,
+} from "./interactions";
 
 config();
 
@@ -54,15 +54,14 @@ client.on(Events.InteractionCreate, async (interaction) => {
     await handleModalSubmit(interaction);
   }
 
-  if (
-    interaction.isUserSelectMenu() &&
-    interaction.customId === "create-issue:assigneeSelect"
-  ) {
-    await handleAssigneeSelect(interaction);
+  // TODO: need more specificity on this check as there could be other user select interactions
+  if (interaction.isUserSelectMenu()) {
+    await assigneeSelectInteraction(interaction);
   }
 
+  // TODO: need more specificity on this check as there could be other button interactions
   if (interaction.isButton()) {
-    await handleButtonInteraction(interaction);
+    await issueButtonInteraction(interaction);
   }
 });
 
