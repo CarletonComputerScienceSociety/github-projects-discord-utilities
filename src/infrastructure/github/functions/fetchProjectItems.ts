@@ -5,7 +5,7 @@ import { Result, Ok, Err } from "ts-results";
 import { ProjectV2Item } from "..";
 import { PROJECT_V2_ITEMS } from "../graphql";
 
-export const fetchProjectV2Items = async (): Promise<Result<Item[], Error>> => {
+export const fetchProjectItems = async (): Promise<Result<Item[], Error>> => {
   const result = await fetchData();
   if (result.err) {
     return result;

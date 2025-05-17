@@ -11,7 +11,7 @@ import {
 // Mock dependencies
 jest.mock("@infrastructure/github", () => ({
   GithubAPI: {
-    fetchProjectV2Items: jest.fn(),
+    fetchProjectItems: jest.fn(),
   },
 }));
 jest.mock("@infrastructure/discord");
@@ -31,32 +31,32 @@ describe("promotionReminder", () => {
     (filterByLabel as jest.Mock).mockReturnValue(mockLabeledItems);
   });
 
-  it("will return early if fetchProjectV2Items fails", async () => {
+  it("will return early if fetchProjectItems fails", async () => {
     const error = { err: "Failed to fetch" };
-    (GithubAPI.fetchProjectV2Items as jest.Mock).mockResolvedValue(error);
+    (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue(error);
 
     const result = await promotionReminder();
 
-    expect(GithubAPI.fetchProjectV2Items).toHaveBeenCalled();
+    expect(GithubAPI.fetchProjectItems).toHaveBeenCalled();
     expect(sendDiscordItemMessage).not.toHaveBeenCalled();
     expect(result).toEqual(error);
   });
 
   it("will return null if there are no matching labeled items", async () => {
-    (GithubAPI.fetchProjectV2Items as jest.Mock).mockResolvedValue({
+    (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({
       val: mockItems,
     });
     (filterByLabel as jest.Mock).mockReturnValue([]);
 
     const result = await promotionReminder();
 
-    expect(GithubAPI.fetchProjectV2Items).toHaveBeenCalled();
+    expect(GithubAPI.fetchProjectItems).toHaveBeenCalled();
     expect(sendDiscordItemMessage).not.toHaveBeenCalled();
     expect(result).toBeNull();
   });
 
   it("will send a Discord message if matching items exist", async () => {
-    (GithubAPI.fetchProjectV2Items as jest.Mock).mockResolvedValue({
+    (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({
       val: mockItems,
     });
     (urgentPromotionMessage as jest.Mock).mockReturnValue("promotion message");
@@ -64,7 +64,7 @@ describe("promotionReminder", () => {
 
     const result = await promotionReminder();
 
-    expect(GithubAPI.fetchProjectV2Items).toHaveBeenCalled();
+    expect(GithubAPI.fetchProjectItems).toHaveBeenCalled();
     expect(filterOutStatus).toHaveBeenCalledWith(mockItems, "Backlog");
     expect(filterForTwentyFourHours).toHaveBeenCalledWith(mockItems);
     expect(filterByLabel).toHaveBeenCalledWith(mockUrgentItems, [

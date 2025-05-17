@@ -1,32 +1,34 @@
 import logger from "@src/config/logger";
 import axios from "axios";
 import { Result, Err, Ok } from "ts-results";
-import { CREATE_ISSUE_WITH_PROJECT } from "../graphql";
-import { REPO_ID } from "../constants";
+import { UPDATE_PROJECT_V2_ITEM_ASSIGNEE } from "../graphql";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 const TOKEN = process.env.GITHUB_ACCESS_TOKEN ?? "";
 
-export const createIssue = async ({
-  title,
-  description,
-  dueDate,
+export const updateProjectItemAssignee = async ({
+  projectId,
+  itemId,
+  fieldId,
+  assigneeId,
 }: {
-  title: string;
-  description: string;
-  dueDate: Date;
-}): Promise<Result<any, Error>> => {
+  projectId: string;
+  itemId: string;
+  fieldId: string;
+  assigneeId: string;
+}): Promise<Result<{ id: string }, Error>> => {
   try {
     const response = await axios.post(
       "https://api.github.com/graphql",
       {
-        query: CREATE_ISSUE_WITH_PROJECT,
+        query: UPDATE_PROJECT_V2_ITEM_ASSIGNEE,
         variables: {
-          repositoryId: REPO_ID,
-          title,
-          body: description,
+          projectId,
+          itemId,
+          fieldId,
+          assigneeId,
         },
       },
       {
@@ -38,20 +40,20 @@ export const createIssue = async ({
 
     if (response.data.errors) {
       logger.error({
-        event: "github.createIssue.error",
+        event: "github.updateProjectItemAssignee.error",
         body: response.data.errors
           .map((error: any) => error.message)
           .join(", "),
       });
-      return Err(new Error("Failed to create issue"));
+      return Err(new Error("Failed to update assignee"));
     }
 
-    return Ok(response.data.data.createIssue.issue);
+    return Ok(response.data.data.updateProjectV2ItemFieldValue.projectV2Item);
   } catch (error) {
     logger.error({
-      event: "github.createIssue.error",
+      event: "github.updateProjectItemAssignee.error",
       body: error instanceof Error ? error.message : "Unknown error",
     });
-    return Err(new Error("Failed to create issue"));
+    return Err(new Error("Failed to update assignee"));
   }
 };

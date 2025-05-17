@@ -15,7 +15,7 @@ import {
 // Mock all external dependencies
 jest.mock("@infrastructure/github", () => ({
   GithubAPI: {
-    fetchProjectV2Items: jest.fn(),
+    fetchProjectItems: jest.fn(),
   },
 }));
 jest.mock("@infrastructure/discord");
@@ -39,7 +39,7 @@ describe("dailyTasksReminder", () => {
 
   it("will send a complete report on Tuesday", async () => {
     mockDayOfWeek(2); // Tuesday
-    (GithubAPI.fetchProjectV2Items as jest.Mock).mockResolvedValue({
+    (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({
       val: mockItems,
     });
     (completeTaskReportMessage as jest.Mock).mockReturnValue("full message");
@@ -47,7 +47,7 @@ describe("dailyTasksReminder", () => {
 
     const result = await dailyTasksReminder();
 
-    expect(GithubAPI.fetchProjectV2Items).toHaveBeenCalled();
+    expect(GithubAPI.fetchProjectItems).toHaveBeenCalled();
     expect(completeTaskReportMessage).toHaveBeenCalledWith({
       urgentItems: ["urgent"],
       unassignedItems: ["unassigned"],
@@ -59,7 +59,7 @@ describe("dailyTasksReminder", () => {
 
   it("will send a simple report on Wednesday", async () => {
     mockDayOfWeek(3); // Wednesday
-    (GithubAPI.fetchProjectV2Items as jest.Mock).mockResolvedValue({
+    (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({
       val: mockItems,
     });
     (simpleTaskReportMessage as jest.Mock).mockReturnValue("simple message");
@@ -75,13 +75,13 @@ describe("dailyTasksReminder", () => {
     expect(result).toEqual({ ok: true });
   });
 
-  it("will return early if fetchProjectV2Items fails", async () => {
+  it("will return early if fetchProjectItems fails", async () => {
     const error = { err: "fetch failed" };
-    (GithubAPI.fetchProjectV2Items as jest.Mock).mockResolvedValue(error);
+    (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue(error);
 
     const result = await dailyTasksReminder();
 
-    expect(GithubAPI.fetchProjectV2Items).toHaveBeenCalled();
+    expect(GithubAPI.fetchProjectItems).toHaveBeenCalled();
     expect(sendDiscordItemMessage).not.toHaveBeenCalled();
     expect(result).toEqual(error);
   });

@@ -13,7 +13,7 @@ export const promotionReminder = async () => {
     event: "promotionReminder.start",
   });
 
-  const githubItemsResult = await GithubAPI.fetchProjectV2Items();
+  const githubItemsResult = await GithubAPI.fetchProjectItems();
   if (githubItemsResult.err) {
     return githubItemsResult;
   }

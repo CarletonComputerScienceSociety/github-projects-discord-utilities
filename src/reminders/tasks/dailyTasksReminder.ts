@@ -27,7 +27,7 @@ export const dailyTasksReminder = async () => {
     event: "dailyTasksReminder.start",
   });
 
-  const githubItemsResult = await GithubAPI.fetchProjectV2Items();
+  const githubItemsResult = await GithubAPI.fetchProjectItems();
   if (githubItemsResult.err) {
     return githubItemsResult;
   }

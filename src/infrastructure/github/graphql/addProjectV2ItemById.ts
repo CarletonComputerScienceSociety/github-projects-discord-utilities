@@ -1,4 +1,4 @@
-export const ADD_ISSUE_TO_PROJECT = `
+export const ADD_PROJECT_V2_ITEM_BY_ID = `
 mutation(
   $projectId: ID!,
   $contentId: ID!
