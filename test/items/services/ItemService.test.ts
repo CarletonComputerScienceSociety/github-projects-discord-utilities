@@ -11,10 +11,17 @@ jest.mock("@infrastructure/github", () => ({
     createIssue: jest.fn(),
     addIssueToProject: jest.fn(),
     updateProjectItemDueDate: jest.fn(),
+    updateProjectItemAssignee: jest.fn(),
   },
 }));
 
-const mockIssue = { id: "issue-123" };
+const mockIssue = {
+  id: "issue-123",
+  title: "Mock Issue Title",
+  url: "https://github.com/mock/issue",
+  createdAt: "2025-05-01T00:00:00Z",
+  updatedAt: "2025-05-02T00:00:00Z",
+};
 const mockItem = { id: "item-456" };
 const mockSuccessResult = Ok({ success: true });
 
@@ -88,6 +95,39 @@ describe("create", () => {
     );
 
     const result = await ItemService.create({ title, description, dueDate });
+
+    expect(result.err).toBe(true);
+    expect(result.val).toEqual(error);
+  });
+});
+
+describe("updateAssignee", () => {
+  const assigneeId = "MDQ6VXNlcjQzMjIzNjgy";
+  const itemId = "issue-123";
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("will return success if GitHubAPI.updateProjectItemAssignee succeeds", async () => {
+    const mockResult = Ok({ status: "success" });
+    (GithubAPI.updateProjectItemAssignee as jest.Mock).mockResolvedValue(mockResult);
+
+    const result = await ItemService.updateAssignee({ assigneeId, itemId });
+
+    expect(GithubAPI.updateProjectItemAssignee).toHaveBeenCalledWith({
+      issueId: itemId,
+      assigneeId,
+    });
+    expect(result.ok).toBe(true);
+    expect(result.val).toEqual({ status: "success" });
+  });
+
+  it("will return error if GitHubAPI.updateProjectItemAssignee fails", async () => {
+    const error = new Error("updateProjectItemAssignee failed");
+    (GithubAPI.updateProjectItemAssignee as jest.Mock).mockResolvedValue(Err(error));
+
+    const result = await ItemService.updateAssignee({ assigneeId, itemId });
 
     expect(result.err).toBe(true);
     expect(result.val).toEqual(error);
