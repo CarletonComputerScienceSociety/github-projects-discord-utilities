@@ -111,7 +111,9 @@ describe("updateAssignee", () => {
 
   it("will return success if GitHubAPI.updateProjectItemAssignee succeeds", async () => {
     const mockResult = Ok({ status: "success" });
-    (GithubAPI.updateProjectItemAssignee as jest.Mock).mockResolvedValue(mockResult);
+    (GithubAPI.updateProjectItemAssignee as jest.Mock).mockResolvedValue(
+      mockResult,
+    );
 
     const result = await ItemService.updateAssignee({ assigneeId, itemId });
 
@@ -125,7 +127,9 @@ describe("updateAssignee", () => {
 
   it("will return error if GitHubAPI.updateProjectItemAssignee fails", async () => {
     const error = new Error("updateProjectItemAssignee failed");
-    (GithubAPI.updateProjectItemAssignee as jest.Mock).mockResolvedValue(Err(error));
+    (GithubAPI.updateProjectItemAssignee as jest.Mock).mockResolvedValue(
+      Err(error),
+    );
 
     const result = await ItemService.updateAssignee({ assigneeId, itemId });
 

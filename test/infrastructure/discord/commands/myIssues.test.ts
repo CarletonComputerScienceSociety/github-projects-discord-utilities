@@ -69,11 +69,13 @@ describe("my-issues command", () => {
     (can as jest.Mock).mockReturnValue(true);
     const interaction = makeInteraction();
     interaction.user.id = "not-in-map";
-    jest.spyOn(Object, 'values').mockReturnValueOnce([{
-      githubUsername: "test-user",
-      discordId: "someone-else",
-      githubId: "123",
-    }]);
+    jest.spyOn(Object, "values").mockReturnValueOnce([
+      {
+        githubUsername: "test-user",
+        discordId: "someone-else",
+        githubId: "123",
+      },
+    ]);
 
     await execute(interaction as any);
 
@@ -85,8 +87,15 @@ describe("my-issues command", () => {
 
   it("will show error if GitHub API fails", async () => {
     (can as jest.Mock).mockReturnValue(true);
-    jest.spyOn(Object, 'values').mockReturnValue([{ githubUsername: "test-user", discordId: "user-123" }]);
-    (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({ err: true, val: { message: "Boom" } });
+    jest
+      .spyOn(Object, "values")
+      .mockReturnValue([
+        { githubUsername: "test-user", discordId: "user-123" },
+      ]);
+    (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({
+      err: true,
+      val: { message: "Boom" },
+    });
 
     const interaction = makeInteraction();
 
@@ -99,8 +108,15 @@ describe("my-issues command", () => {
 
   it("will show message if no assigned issues are found", async () => {
     (can as jest.Mock).mockReturnValue(true);
-    jest.spyOn(Object, 'values').mockReturnValue([{ githubUsername: "test-user", discordId: "user-123" }]);
-    (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({ err: false, val: [] });
+    jest
+      .spyOn(Object, "values")
+      .mockReturnValue([
+        { githubUsername: "test-user", discordId: "user-123" },
+      ]);
+    (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({
+      err: false,
+      val: [],
+    });
 
     const interaction = makeInteraction();
 
@@ -113,7 +129,11 @@ describe("my-issues command", () => {
 
   it("will show a specific issue by index", async () => {
     (can as jest.Mock).mockReturnValue(true);
-    jest.spyOn(Object, 'values').mockReturnValue([{ githubUsername: "test-user", discordId: "user-123" }]);
+    jest
+      .spyOn(Object, "values")
+      .mockReturnValue([
+        { githubUsername: "test-user", discordId: "user-123" },
+      ]);
     (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({
       err: false,
       val: [defaultItem({ assignedUsers: ["https://github.com/test-user"] })],
@@ -131,7 +151,11 @@ describe("my-issues command", () => {
 
   it("will show index list when no index is provided", async () => {
     (can as jest.Mock).mockReturnValue(true);
-    jest.spyOn(Object, 'values').mockReturnValue([{ githubUsername: "test-user", discordId: "user-123" }]);
+    jest
+      .spyOn(Object, "values")
+      .mockReturnValue([
+        { githubUsername: "test-user", discordId: "user-123" },
+      ]);
     (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({
       err: false,
       val: [defaultItem({ assignedUsers: ["https://github.com/test-user"] })],
@@ -142,7 +166,7 @@ describe("my-issues command", () => {
     await execute(interaction as any);
 
     expect(mockEditReply).toHaveBeenCalledWith({
-      content: expect.stringContaining("assigned issue(s):\n\n\`0\`"),
+      content: expect.stringContaining("assigned issue(s):\n\n`0`"),
     });
   });
 });

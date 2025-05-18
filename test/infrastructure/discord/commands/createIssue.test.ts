@@ -1,12 +1,12 @@
 import { ItemService } from "@src/items/services";
 import { Ok, Err } from "ts-results";
-import { execute, handleModalSubmit } from "@infrastructure/discord/commands/createIssue";
+import {
+  execute,
+  handleModalSubmit,
+} from "@infrastructure/discord/commands/createIssue";
 import { promptAssigneeSelection } from "@infrastructure/discord/interactions";
 import { can } from "@infrastructure/discord/authz";
-import {
-  CommandInteraction,
-  ModalSubmitInteraction,
-} from "discord.js";
+import { CommandInteraction, ModalSubmitInteraction } from "discord.js";
 
 jest.mock("@src/items/services", () => ({
   ItemService: {
@@ -75,9 +75,9 @@ describe("create-issue slash command", () => {
         key === "dueDate" ? "bad-date" : "test value",
       );
 
-      await expect(() =>
-        handleModalSubmit(interaction),
-      ).rejects.toThrow("Invalid due date format. Please use yyyy-mm-dd.");
+      await expect(() => handleModalSubmit(interaction)).rejects.toThrow(
+        "Invalid due date format. Please use yyyy-mm-dd.",
+      );
     });
 
     it("will handle error from ItemService.create", async () => {

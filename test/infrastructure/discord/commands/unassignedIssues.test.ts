@@ -75,7 +75,10 @@ describe("unassigned-issues command", () => {
 
   it("will show error if GitHub API fails", async () => {
     (can as jest.Mock).mockReturnValue(true);
-    (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({ err: true, val: { message: "fail" } });
+    (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({
+      err: true,
+      val: { message: "fail" },
+    });
 
     const interaction = makeInteraction();
     await execute(interaction as any);
@@ -87,7 +90,10 @@ describe("unassigned-issues command", () => {
 
   it("will show message if no unassigned issues are found", async () => {
     (can as jest.Mock).mockReturnValue(true);
-    (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({ err: false, val: [] });
+    (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({
+      err: false,
+      val: [],
+    });
     (filterForUnassigned as jest.Mock).mockReturnValue([]);
 
     const interaction = makeInteraction();
@@ -100,7 +106,10 @@ describe("unassigned-issues command", () => {
 
   it("will return a specific unassigned issue by index", async () => {
     (can as jest.Mock).mockReturnValue(true);
-    (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({ err: false, val: [defaultItem()] });
+    (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({
+      err: false,
+      val: [defaultItem()],
+    });
     (filterForUnassigned as jest.Mock).mockReturnValue([defaultItem()]);
 
     const interaction = makeInteraction({ getInteger: () => 0 });
@@ -114,14 +123,17 @@ describe("unassigned-issues command", () => {
 
   it("will show an index list of unassigned issues when no index is provided", async () => {
     (can as jest.Mock).mockReturnValue(true);
-    (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({ err: false, val: [defaultItem()] });
+    (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({
+      err: false,
+      val: [defaultItem()],
+    });
     (filterForUnassigned as jest.Mock).mockReturnValue([defaultItem()]);
 
     const interaction = makeInteraction();
     await execute(interaction as any);
 
     expect(mockEditReply).toHaveBeenCalledWith({
-      content: expect.stringContaining("unassigned issue(s) found:\n\n\`0\`"),
+      content: expect.stringContaining("unassigned issue(s) found:\n\n`0`"),
     });
   });
 });

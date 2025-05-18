@@ -1,9 +1,12 @@
 import { issueButtonInteraction } from "@infrastructure/discord/interactions/issueButtonInteraction";
 import { promptAssigneeSelection } from "@infrastructure/discord/interactions/promptAssigneeSelection";
 
-jest.mock("@infrastructure/discord/interactions/promptAssigneeSelection", () => ({
-  promptAssigneeSelection: jest.fn(),
-}));
+jest.mock(
+  "@infrastructure/discord/interactions/promptAssigneeSelection",
+  () => ({
+    promptAssigneeSelection: jest.fn(),
+  }),
+);
 
 describe("issueButtonInteraction", () => {
   const mockReply = jest.fn();
@@ -55,7 +58,10 @@ describe("issueButtonInteraction", () => {
 
     await issueButtonInteraction(interaction);
 
-    expect(promptAssigneeSelection).toHaveBeenCalledWith(interaction, "abc-123");
+    expect(promptAssigneeSelection).toHaveBeenCalledWith(
+      interaction,
+      "abc-123",
+    );
   });
 
   it("will respond with delete message", async () => {
