@@ -121,5 +121,39 @@ describe("create-issue slash command", () => {
         "abc-123",
       );
     });
+
+    it("will default due date to one week from today if left blank", async () => {
+      const today = new Date();
+      const expectedDate = new Date(today);
+      expectedDate.setDate(today.getDate() + 7);
+
+      interaction.fields.getTextInputValue = jest.fn((key) => {
+        if (key === "dueDate") return "";
+        return "test value";
+      });
+
+      (ItemService.create as jest.Mock).mockResolvedValue(
+        Ok({ githubIssueId: "abc-123" }),
+      );
+
+      await handleModalSubmit(interaction);
+
+      expect(ItemService.create).toHaveBeenCalledWith({
+        title: "test value",
+        description: "test value",
+        dueDate: expect.any(Date),
+      });
+
+      const actualDueDate = (ItemService.create as jest.Mock).mock.calls[0][0].dueDate;
+
+      expect(actualDueDate.toISOString().slice(0, 10)).toEqual(
+        expectedDate.toISOString().slice(0, 10),
+      );
+
+      expect(promptAssigneeSelection).toHaveBeenCalledWith(
+        interaction,
+        "abc-123",
+      );
+    });
   });
 });

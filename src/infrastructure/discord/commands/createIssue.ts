@@ -44,7 +44,7 @@ export async function execute(interaction: CommandInteraction) {
 
   const dueDateInput = new TextInputBuilder()
     .setCustomId("dueDate")
-    .setLabel("Due Date (e.g. yyyy-mm-dd)")
+    .setLabel("Due Date (yyyy-mm-dd, defaults in 1 week)")
     .setStyle(TextInputStyle.Short)
     .setRequired(false);
 
@@ -68,16 +68,24 @@ export async function handleModalSubmit(
 ): Promise<void> {
   const title = interaction.fields.getTextInputValue("title");
   const description = interaction.fields.getTextInputValue("description");
-  const dueDate = interaction.fields.getTextInputValue("dueDate");
+  const dueDateInput = interaction.fields.getTextInputValue("dueDate");
 
-  if (dueDate && !/^\d{4}-\d{2}-\d{2}$/.test(dueDate)) {
-    throw new Error("Invalid due date format. Please use yyyy-mm-dd.");
+  let dueDate: Date;
+
+  if (dueDateInput) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dueDateInput)) {
+      throw new Error("Invalid due date format. Please use yyyy-mm-dd.");
+    }
+    dueDate = new Date(dueDateInput);
+  } else {
+    dueDate = new Date();
+    dueDate.setDate(dueDate.getDate() + 7); // one week from today
   }
 
   const result = await ItemService.create({
     title,
     description,
-    dueDate: new Date(dueDate),
+    dueDate,
   });
 
   if (result.err) {
