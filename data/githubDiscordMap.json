@@ -1,12 +1,77 @@
 {
-    "AJaccP": "693093284998021141",
-    "exkellybur": "398923451311587338",
-    "JohnLu2004": "358054341179080704",
-    "MathyouMB": "147881865548791808",
-    "MrRibcage": "142782738615762944",
-    "rebeccakempe12": "730876980861599744",
-    "richard-dh-kim": "241421629543022592",
-    "ryangchung": "365948481946517504",
-    "VictorLi5611": "247472197902270465",
-    "VMordvinova": "759902786107473932"
+  "AJaccP": {
+    "githubUsername": "AJaccP",
+    "githubId": "U_kgDOBrIU2w",
+    "discordId": "693093284998021141"
+  },
+  "eros-mcguire": {
+    "githubUsername": "eros-mcguire",
+    "githubId": "tbd",
+    "discordId": "981895462992891935"
+  },
+  "exkellybur": {
+    "githubUsername": "exkellybur",
+    "githubId": "U_kgDOBx7TuA",
+    "discordId": "398923451311587338"
+  },
+  "JohnLu2004": {
+    "githubUsername": "JohnLu2004",
+    "githubId": "MDQ6VXNlcjg3NjczMDY4",
+    "discordId": "358054341179080704"
+  },
+  "kimiaKR": {
+    "githubUsername": "kimiaKR",
+    "githubId": "U_kgDOC0aBdw",
+    "discordId": "706977821502865578"
+  },
+  "LandonJMM": {
+    "githubUsername": "LandonJMM",
+    "githubId": "U_kgDOBs5OWw",
+    "discordId": "657607140835328059"
+  },
+  "MathyouMB": {
+    "githubUsername": "MathyouMB",
+    "githubId": "MDQ6VXNlcjQzMjIzNjgy",
+    "discordId": "147881865548791808"
+  },
+  "MrRibcage": {
+    "githubUsername": "MrRibcage",
+    "githubId": "MDQ6VXNlcjQzNjU2MTM3",
+    "discordId": "142782738615762944"
+  },
+  "Nguyen-HanhNong": {
+    "githubUsername": "Nguyen-HanhNong",
+    "githubId": "MDQ6VXNlcjgxOTc3MzUw",
+    "discordId": "929100662082531398"
+  },
+  "rebeccakempe12": {
+    "githubUsername": "rebeccakempe12",
+    "githubId": "MDQ6VXNlcjc3MzY4MTky",
+    "discordId": "730876980861599744"
+  },
+  "richard-dh-kim": {
+    "githubUsername": "richard-dh-kim",
+    "githubId": "MDQ6VXNlcjU4OTU5NjQ5",
+    "discordId": "241421629543022592"
+  },
+  "rj-sci": {
+    "githubUsername": "rj-sci",
+    "githubId": "tbd",
+    "discordId": "327557300497809422"
+  },
+  "ryangchung": {
+    "githubUsername": "ryangchung",
+    "githubId": "MDQ6VXNlcjg3MDI3OTgx",
+    "discordId": "365948481946517504"
+  },
+  "VictorLi5611": {
+    "githubUsername": "VictorLi5611",
+    "githubId": "MDQ6VXNlcjczMzA1Mjg3",
+    "discordId": "247472197902270465"
+  },
+  "VMordvinova": {
+    "githubUsername": "VMordvinova",
+    "githubId": "U_kgDOCFXXvw",
+    "discordId": "759902786107473932"
+  }
 }

@@ -5,8 +5,14 @@ import githubDiscordMapJson from "../../../../data/githubDiscordMap.json";
 import { can } from "../authz";
 import { buildIssueButtonRow } from "../builders";
 
-const githubDiscordMap: { [githubUsername: string]: string } =
-  githubDiscordMapJson;
+// Update type to reflect new structure
+const githubDiscordMap: {
+  [githubUsername: string]: {
+    githubUsername: string;
+    githubId: string;
+    discordId: string;
+  };
+} = githubDiscordMapJson;
 
 export const data = new SlashCommandBuilder()
   .setName("my-issues")
@@ -20,12 +26,13 @@ export async function execute(interaction: CommandInteraction) {
     });
     return;
   }
+
   const discordUserId = interaction.user.id;
 
-  // Find GitHub username from Discord ID
-  const githubUsername = Object.keys(githubDiscordMap).find(
-    (ghUser) => githubDiscordMap[ghUser] === discordUserId,
-  );
+  // Find GitHub username from Discord ID using the new structure
+  const githubUsername = Object.values(githubDiscordMap).find(
+    (entry) => entry.discordId === discordUserId,
+  )?.githubUsername;
 
   if (!githubUsername) {
     await interaction.reply({

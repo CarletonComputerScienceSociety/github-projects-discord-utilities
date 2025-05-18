@@ -63,7 +63,7 @@ const githubUrlToDiscordId = (githubUrl: string) => {
       "https://github.com/",
       "",
     ) as keyof typeof githubDiscordMap
-  ];
+  ].discordId;
 };
 
 const formatDiscordDate = (date: Date) => {
