@@ -42,7 +42,8 @@ export async function assigneeSelectInteraction(
 
   if (result.err) {
     await interaction.reply({
-      content: "❌ Failed to update assignee.",
+      content:
+        "❌ Failed to update assignee. Cannot assign to Draft Issues (yet).",
       ephemeral: true,
     });
     return;

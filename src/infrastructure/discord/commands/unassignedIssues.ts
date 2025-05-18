@@ -4,6 +4,7 @@ import { filterForUnassigned } from "@src/items";
 import logger from "@config/logger";
 import { can } from "../authz";
 import { buildIssueButtonRow } from "../builders";
+import { formatDiscordDate } from "../webhookMessages";
 
 export const data = new SlashCommandBuilder()
   .setName("unassigned-issues")
@@ -17,12 +18,18 @@ export const data = new SlashCommandBuilder()
         { name: "Today", value: "today" },
         { name: "All Time", value: "all-time" },
       ),
+  )
+  .addIntegerOption((option) =>
+    option
+      .setName("index")
+      .setDescription("Index of the specific issue to display")
+      .setRequired(false),
   );
 
 export async function execute(interaction: CommandInteraction) {
   if (!can(interaction)) {
     await interaction.reply({
-      content: "You do not have permission to create an issue.",
+      content: "You do not have permission to view issues.",
       ephemeral: true,
     });
     return;
@@ -30,8 +37,10 @@ export async function execute(interaction: CommandInteraction) {
 
   await interaction.deferReply({ ephemeral: true });
 
-  //@ts-ignore // TODO fix this ignore
+  // @ts-ignore // TODO: Fix types
   const dateRange = interaction.options.getString("date-range", true);
+  // @ts-ignore
+  const issueIndex = interaction.options.getInteger("index");
 
   const githubItemsResult = await GithubAPI.fetchProjectItems();
   if (githubItemsResult.err) {
@@ -67,13 +76,15 @@ export async function execute(interaction: CommandInteraction) {
     return;
   }
 
-  const limitedItems = unassignedItems.slice(0, 5);
+  if (issueIndex !== null) {
+    if (issueIndex < 0 || issueIndex >= unassignedItems.length) {
+      await interaction.editReply({
+        content: `❌ Invalid issue index. Please use a number between 0 and ${unassignedItems.length - 1}.`,
+      });
+      return;
+    }
 
-  await interaction.editReply({
-    content: `📋 Showing ${limitedItems.length} unassigned issue(s).`,
-  });
-
-  for (const item of limitedItems) {
+    const item = unassignedItems[issueIndex];
     const link = item.url ?? "https://github.com/";
 
     const buttons = buildIssueButtonRow(item.githubIssueId, link, [
@@ -81,12 +92,28 @@ export async function execute(interaction: CommandInteraction) {
       "open",
     ]);
 
-    await interaction.followUp({
-      content: `## ${item.title}`,
+    await interaction.editReply({
+      content: `📌 **Issue #${issueIndex}**\n## ${item.title}`,
       components: [buttons],
-      ephemeral: true,
     });
+
+    return;
   }
+
+  // Show list of issues with index numbers
+  const list = unassignedItems
+    .map((item, idx) => {
+      const titleWithLink = `[${item.title}](<${item.url}>)`;
+      const due = item.dueDate ? formatDiscordDate(item.dueDate) : "";
+      const status = item.status ?? "";
+
+      return `\`${idx}\` — ${titleWithLink}${due ? ` - ${due}` : ""}${status ? ` - ${status}` : ""}`;
+    })
+    .join("\n");
+
+  await interaction.editReply({
+    content: `📋 ${unassignedItems.length} unassigned issue(s) found:\n\n${list}\n\nUse \`/unassigned-issues date-range:${dateRange} index:<number>\` to view a specific issue.`,
+  });
 
   logger.info({
     event: "unassignedIssues.success",

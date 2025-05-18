@@ -4,6 +4,7 @@ import logger from "@config/logger";
 import githubDiscordMapJson from "../../../../data/githubDiscordMap.json";
 import { can } from "../authz";
 import { buildIssueButtonRow } from "../builders";
+import { formatDiscordDate } from "../webhookMessages";
 
 // Update type to reflect new structure
 const githubDiscordMap: {
@@ -16,7 +17,13 @@ const githubDiscordMap: {
 
 export const data = new SlashCommandBuilder()
   .setName("my-issues")
-  .setDescription("List all GitHub project issues assigned to you");
+  .setDescription("List all GitHub project issues assigned to you")
+  .addIntegerOption((option) =>
+    option
+      .setName("index")
+      .setDescription("Index of the specific issue to display")
+      .setRequired(false),
+  );
 
 export async function execute(interaction: CommandInteraction) {
   if (!can(interaction)) {
@@ -29,7 +36,6 @@ export async function execute(interaction: CommandInteraction) {
 
   const discordUserId = interaction.user.id;
 
-  // Find GitHub username from Discord ID using the new structure
   const githubUsername = Object.values(githubDiscordMap).find(
     (entry) => entry.discordId === discordUserId,
   )?.githubUsername;
@@ -72,11 +78,18 @@ export async function execute(interaction: CommandInteraction) {
     return;
   }
 
-  await interaction.editReply({
-    content: `📋 Showing ${assignedItems.length} issue(s) assigned to you:`,
-  });
+  // @ts-ignore // TODO: Fix type error
+  const issueIndex = interaction.options.getInteger("index");
 
-  for (const item of assignedItems.slice(0, 5)) {
+  if (issueIndex !== null) {
+    if (issueIndex < 0 || issueIndex >= assignedItems.length) {
+      await interaction.editReply({
+        content: `❌ Invalid issue index. Please use a number between 0 and ${assignedItems.length - 1}.`,
+      });
+      return;
+    }
+
+    const item = assignedItems[issueIndex];
     const link = item.url ?? "https://github.com/";
 
     const buttons = buildIssueButtonRow(item.githubIssueId, link, [
@@ -84,12 +97,27 @@ export async function execute(interaction: CommandInteraction) {
       "open",
     ]);
 
-    await interaction.followUp({
-      content: `## ${item.title}`,
+    await interaction.editReply({
+      content: `📌 **Issue #${issueIndex}**\n## ${item.title}`,
       components: [buttons],
-      ephemeral: true,
     });
+
+    return;
   }
+
+  // Show list of issues with index numbers
+  const list = assignedItems
+    .map((item, idx) => {
+      const titleWithLink = `[${item.title}](<${item.url}>)`;
+      const due = item.dueDate ? formatDiscordDate(item.dueDate) : "";
+      const status = item.status ?? "";
+
+      return `\`${idx}\` — ${titleWithLink}${due ? ` - ${due}` : ""}${status ? ` - ${status}` : ""}`;
+    })
+    .join("\n");
+  await interaction.editReply({
+    content: `📋 You have ${assignedItems.length} assigned issue(s):\n\n${list}\n\nUse \`/my-issues index:<number>\` to view a specific issue.`,
+  });
 
   logger.info({
     event: "myIssues.success",

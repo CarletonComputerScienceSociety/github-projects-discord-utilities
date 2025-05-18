@@ -6,9 +6,9 @@ export async function issueButtonInteraction(
 ) {
   if (!interaction.isButton()) return;
 
-  const [_issue, action, githubId] = interaction.customId.split(":");
+  const [_issue, action, githubIssueId] = interaction.customId.split(":");
 
-  if (!githubId) {
+  if (!githubIssueId) {
     await interaction.reply({
       content: "⚠️ Invalid button ID.",
       ephemeral: true,
@@ -19,24 +19,23 @@ export async function issueButtonInteraction(
   switch (action) {
     case "edit":
       await interaction.reply({
-        content: `✏️ Editing issue with ID \`${githubId}\` (not yet implemented).`,
+        content: `✏️ Editing issue with ID \`${githubIssueId}\` (not yet implemented).`,
         ephemeral: true,
       });
       break;
 
     case "assign":
-      await promptAssigneeSelection(interaction, githubId);
+      await promptAssigneeSelection(interaction, githubIssueId);
       break;
 
     case "delete":
       await interaction.reply({
-        content: `🗑️ Deleting issue \`${githubId}\` (not yet implemented).`,
+        content: `🗑️ Deleting issue \`${githubIssueId}\` (not yet implemented).`,
         ephemeral: true,
       });
       break;
 
     default:
-      // logger.warn({ event: "button.unknownAction", action });
       await interaction.reply({
         content: `❌ Unknown action: \`${action}\``,
         ephemeral: true,

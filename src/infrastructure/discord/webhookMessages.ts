@@ -66,7 +66,7 @@ const githubUrlToDiscordId = (githubUrl: string) => {
   ].discordId;
 };
 
-const formatDiscordDate = (date: Date) => {
+export const formatDiscordDate = (date: Date) => {
   return `<t:${Math.floor(date.getTime() / 1000)}:D>`;
 };
 
