@@ -1,10 +1,14 @@
 export interface Item {
+  githubProjectItemId: string;
+  githubIssueId: string;
   title: string;
   status: string;
   assignedUsers: string[];
   labels?: string[];
   dueDate?: Date;
   url?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export const filterByDateRange = (

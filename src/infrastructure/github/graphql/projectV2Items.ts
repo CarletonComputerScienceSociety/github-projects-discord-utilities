@@ -5,13 +5,17 @@ export const PROJECT_V2_ITEMS = `
 			items(first: 100) {
 			nodes {
 				id
+				createdAt
+				updatedAt
 				content {
 					... on DraftIssue {
 						title
+						id
 					}
 					... on Issue {
 						title
 						url
+						id
 					}
 				}
 				fieldValueByName(name: "Due") {

@@ -1,5 +1,5 @@
 import { promotionReminder } from "@src/reminders/tasks/promotionReminder";
-import { fetchProjectV2Items } from "@infrastructure/github";
+import { GithubAPI } from "@infrastructure/github";
 import { sendDiscordItemMessage } from "@infrastructure/discord";
 import { urgentPromotionMessage } from "@src/reminders/messages";
 import {
@@ -9,7 +9,11 @@ import {
 } from "@src/items";
 
 // Mock dependencies
-jest.mock("@infrastructure/github");
+jest.mock("@infrastructure/github", () => ({
+  GithubAPI: {
+    fetchProjectItems: jest.fn(),
+  },
+}));
 jest.mock("@infrastructure/discord");
 jest.mock("@src/reminders/messages");
 jest.mock("@src/items");
@@ -27,36 +31,40 @@ describe("promotionReminder", () => {
     (filterByLabel as jest.Mock).mockReturnValue(mockLabeledItems);
   });
 
-  it("will return early if fetchProjectV2Items fails", async () => {
+  it("will return early if fetchProjectItems fails", async () => {
     const error = { err: "Failed to fetch" };
-    (fetchProjectV2Items as jest.Mock).mockResolvedValue(error);
+    (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue(error);
 
     const result = await promotionReminder();
 
-    expect(fetchProjectV2Items).toHaveBeenCalled();
+    expect(GithubAPI.fetchProjectItems).toHaveBeenCalled();
     expect(sendDiscordItemMessage).not.toHaveBeenCalled();
     expect(result).toEqual(error);
   });
 
   it("will return null if there are no matching labeled items", async () => {
-    (fetchProjectV2Items as jest.Mock).mockResolvedValue({ val: mockItems });
+    (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({
+      val: mockItems,
+    });
     (filterByLabel as jest.Mock).mockReturnValue([]);
 
     const result = await promotionReminder();
 
-    expect(fetchProjectV2Items).toHaveBeenCalled();
+    expect(GithubAPI.fetchProjectItems).toHaveBeenCalled();
     expect(sendDiscordItemMessage).not.toHaveBeenCalled();
     expect(result).toBeNull();
   });
 
   it("will send a Discord message if matching items exist", async () => {
-    (fetchProjectV2Items as jest.Mock).mockResolvedValue({ val: mockItems });
+    (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({
+      val: mockItems,
+    });
     (urgentPromotionMessage as jest.Mock).mockReturnValue("promotion message");
     (sendDiscordItemMessage as jest.Mock).mockResolvedValue({ ok: true });
 
     const result = await promotionReminder();
 
-    expect(fetchProjectV2Items).toHaveBeenCalled();
+    expect(GithubAPI.fetchProjectItems).toHaveBeenCalled();
     expect(filterOutStatus).toHaveBeenCalledWith(mockItems, "Backlog");
     expect(filterForTwentyFourHours).toHaveBeenCalledWith(mockItems);
     expect(filterByLabel).toHaveBeenCalledWith(mockUrgentItems, [
