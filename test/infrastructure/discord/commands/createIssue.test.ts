@@ -144,7 +144,8 @@ describe("create-issue slash command", () => {
         dueDate: expect.any(Date),
       });
 
-      const actualDueDate = (ItemService.create as jest.Mock).mock.calls[0][0].dueDate;
+      const actualDueDate = (ItemService.create as jest.Mock).mock.calls[0][0]
+        .dueDate;
 
       expect(actualDueDate.toISOString().slice(0, 10)).toEqual(
         expectedDate.toISOString().slice(0, 10),
