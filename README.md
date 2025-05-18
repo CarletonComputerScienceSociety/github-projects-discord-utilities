@@ -165,3 +165,18 @@ Project Item Fields Query
   }
 }
 ```
+
+Members with Role Query
+
+```
+query {
+  organization(login: "CarletonComputerScienceSociety") {
+    membersWithRole(first: 100) {
+      nodes {
+        login
+        id
+      }
+    }
+  }
+}
+```
