@@ -88,5 +88,5 @@ export async function handleModalSubmit(
     return;
   }
 
-  await promptAssigneeSelection(interaction);
+  await promptAssigneeSelection(interaction, result.val.githubIssueId);
 }

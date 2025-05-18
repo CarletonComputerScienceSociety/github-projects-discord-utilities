@@ -10,10 +10,12 @@ export const PROJECT_V2_ITEMS = `
 				content {
 					... on DraftIssue {
 						title
+						id
 					}
 					... on Issue {
 						title
 						url
+						id
 					}
 				}
 				fieldValueByName(name: "Due") {

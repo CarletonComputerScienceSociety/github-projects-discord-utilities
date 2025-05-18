@@ -63,7 +63,8 @@ const convertGithubItems = (items: ProjectV2Item[]) => {
       }
 
       return {
-        githubId: item.id,
+        githubProjectItemId: item.id,
+        githubIssueId: item.content.id,
         title: item.content.title,
         url: item.content.url,
         assignedUsers,

@@ -76,7 +76,7 @@ export async function execute(interaction: CommandInteraction) {
   for (const item of limitedItems) {
     const link = item.url ?? "https://github.com/";
 
-    const buttons = buildIssueButtonRow(item.githubId, link, [
+    const buttons = buildIssueButtonRow(item.githubIssueId, link, [
       "assign",
       "open",
     ]);

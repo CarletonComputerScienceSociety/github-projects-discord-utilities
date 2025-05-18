@@ -1,7 +1,4 @@
-import {
-  SlashCommandBuilder,
-  CommandInteraction,
-} from "discord.js";
+import { SlashCommandBuilder, CommandInteraction } from "discord.js";
 import { GithubAPI } from "@infrastructure/github";
 import logger from "@config/logger";
 import githubDiscordMapJson from "../../../../data/githubDiscordMap.json";
@@ -75,7 +72,10 @@ export async function execute(interaction: CommandInteraction) {
   for (const item of assignedItems.slice(0, 5)) {
     const link = item.url ?? "https://github.com/";
 
-    const buttons = buildIssueButtonRow(item.githubId, link, ["unassign", "open"]);
+    const buttons = buildIssueButtonRow(item.githubIssueId, link, [
+      "unassign",
+      "open",
+    ]);
 
     await interaction.followUp({
       content: `## ${item.title}`,

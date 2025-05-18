@@ -1,5 +1,6 @@
 export interface Item {
-  githubId: string;
+  githubProjectItemId: string;
+  githubIssueId: string;
   title: string;
   status: string;
   assignedUsers: string[];

@@ -25,7 +25,7 @@ export async function issueButtonInteraction(
       break;
 
     case "assign":
-      await promptAssigneeSelection(interaction);
+      await promptAssigneeSelection(interaction, githubId);
       break;
 
     case "delete":

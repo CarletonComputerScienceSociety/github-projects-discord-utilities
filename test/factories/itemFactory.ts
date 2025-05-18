@@ -16,7 +16,8 @@ export const itemFactory = ({
   url?: string;
 } = {}): Item => {
   return {
-    githubId: "githubId",
+    githubProjectItemId: "githubProjectItemId",
+    githubIssueId: "githubIssueId",
     createdAt: new Date(),
     updatedAt: new Date(),
     title: title ?? "title",

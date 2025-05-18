@@ -14,6 +14,8 @@ mutation(
       number
       title
       url
+      createdAt
+      updatedAt
     }
   }
 }

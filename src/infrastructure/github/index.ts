@@ -6,6 +6,7 @@ export interface ProjectV2Item {
   content: {
     title: string;
     url: string;
+    id: string;
   };
   fieldValueByName: {
     id: string;
