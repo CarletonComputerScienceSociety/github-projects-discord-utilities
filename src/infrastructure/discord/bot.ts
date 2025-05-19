@@ -7,16 +7,13 @@ import {
   assigneeSelectInteraction,
   issueButtonInteraction,
 } from "./interactions";
+import { schedule } from "./scheduler";
 
 config();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 const commands = new Map<string, any>();
-const tempIssueData: Record<
-  string,
-  { title: string; description: string; dueDate: string }
-> = {};
 
 // Load slash commands
 const commandFiles = fs.readdirSync(path.join(__dirname, "commands"));
@@ -27,8 +24,9 @@ const commandFiles = fs.readdirSync(path.join(__dirname, "commands"));
   }
 })();
 
-client.once(Events.ClientReady, (c) => {
-  console.log(`✅ Logged in as ${c.user.tag}`);
+client.once(Events.ClientReady, (client) => {
+  console.log(`✅ Logged in as ${client.user.tag}`);
+  schedule(client);
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
