@@ -25,10 +25,10 @@ export const filterByDateRange = (
   });
 };
 
-// urgent items are due tomorrow or earlier
+// urgent items are due 2 days or earlier
 export const filterForUrgentItems = (items: Item[]) => {
   const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 2);
+  tomorrow.setDate(tomorrow.getDate() + 3);
 
   return items.filter((item) => {
     if (!item.dueDate) {

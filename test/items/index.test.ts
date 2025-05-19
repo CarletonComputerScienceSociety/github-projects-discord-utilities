@@ -90,13 +90,16 @@ describe("filterForUrgentItems", () => {
     tomorrow.setDate(tomorrow.getDate() + 2);
     const dayAfterTomorrow = new Date();
     dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 3);
+    const dayAfterThat = new Date();
+    dayAfterThat.setDate(dayAfterThat.getDate() + 4);
     const item1 = itemFactory({ dueDate: today });
     const item2 = itemFactory({ dueDate: tomorrow });
     const item3 = itemFactory({ dueDate: dayAfterTomorrow });
+    const item4 = itemFactory({ dueDate: dayAfterThat });
 
-    const result = filterForUrgentItems([item1, item2, item3]);
+    const result = filterForUrgentItems([item1, item2, item3, item4]);
 
-    expect(result).toEqual([item1, item2]);
+    expect(result).toEqual([item1, item2, item3]);
   });
 });
 
