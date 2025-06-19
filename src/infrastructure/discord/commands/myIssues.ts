@@ -1,19 +1,10 @@
 import { SlashCommandBuilder, CommandInteraction } from "discord.js";
 import { GithubAPI } from "@infrastructure/github";
 import logger from "@config/logger";
-import githubDiscordMapJson from "../../../../data/githubDiscordMap.json";
+import { UserService } from "@src/items/services/UserService";
 import { can } from "../authz";
 import { buildIssueButtonRow } from "../builders";
 import { formatDiscordDate } from "../webhookMessages";
-
-// Update type to reflect new structure
-const githubDiscordMap: {
-  [githubUsername: string]: {
-    githubUsername: string;
-    githubId: string;
-    discordId: string;
-  };
-} = githubDiscordMapJson;
 
 export const data = new SlashCommandBuilder()
   .setName("my-issues")
@@ -35,18 +26,18 @@ export async function execute(interaction: CommandInteraction) {
   }
 
   const discordUserId = interaction.user.id;
-
-  const githubUsername = Object.values(githubDiscordMap).find(
-    (entry) => entry.discordId === discordUserId,
-  )?.githubUsername;
-
-  if (!githubUsername) {
+  
+  const userResult = await UserService.findUserByDiscordID(discordUserId);
+  if (userResult.err) {
     await interaction.reply({
       content: "❌ You don’t appear to be linked to a GitHub account.",
       ephemeral: true,
     });
     return;
   }
+
+  const githubUsername = userResult.val.githubUsername;
+
 
   await interaction.deferReply({ ephemeral: true });
 

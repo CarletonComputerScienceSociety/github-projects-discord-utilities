@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Err, Ok, Result } from "ts-results";
 import dotenv from "dotenv";
-import githubDiscordMap from "../../../data/githubDiscordMap.json";
+import { UserService } from "@src/items/services/UserService";
 import { Item } from "../../items";
 import logger from "@config/logger";
 
@@ -57,15 +57,6 @@ export const sendDiscordItemMessage = async (
   }
 };
 
-const githubUrlToDiscordId = (githubUrl: string) => {
-  return githubDiscordMap[
-    githubUrl.replace(
-      "https://github.com/",
-      "",
-    ) as keyof typeof githubDiscordMap
-  ].discordId;
-};
-
 export const formatDiscordDate = (date: Date) => {
   return `<t:${Math.floor(date.getTime() / 1000)}:D>`;
 };
@@ -78,18 +69,17 @@ const formatMessageSectionTitle = (title: string) => {
   return `\n### ${title}: \n`;
 };
 
-const formatDiscordAssignees = (assignees: string[]) => {
-  // TODO: we should filter out the github url before getting to this stuff
-  return assignees
-    .map((assignee) => {
-      const discordId = githubUrlToDiscordId(assignee);
-      if (discordId) {
-        return `<@${discordId}>`;
-      } else {
-        return assignee;
-      }
-    })
-    .join(", ");
+const formatDiscordAssignees = async (assignees: string[]) => {
+  const mentions = await Promise.all(
+    assignees.map(async (githubUrl) => {
+      const githubUsername = githubUrl.replace("https://github.com/", "");
+      const userResult = await UserService.findUserByGithubUsername(githubUsername);
+
+      return userResult.ok ? `<@${userResult.val.discordId}>` : githubUsername;
+    }),
+  );
+
+  return mentions.join(", ");
 };
 
 const formatItem = (item: Item) => {

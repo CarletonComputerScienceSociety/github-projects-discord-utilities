@@ -1,15 +1,6 @@
 import { ItemService } from "@src/items/services";
 import { UserSelectMenuInteraction } from "discord.js";
-import githubDiscordMapJson from "../../../../data/githubDiscordMap.json";
-
-// Updated structure of the map
-const githubDiscordMap: {
-  [githubUsername: string]: {
-    githubUsername: string;
-    githubId: string;
-    discordId: string;
-  };
-} = githubDiscordMapJson;
+import { UserService } from "@src/items/services/UserService";
 
 export async function assigneeSelectInteraction(
   interaction: UserSelectMenuInteraction,
@@ -22,18 +13,17 @@ export async function assigneeSelectInteraction(
   const githubIssueId = match[1];
   const selectedUserId = interaction.values[0];
 
-  // Find the GitHub ID using the selected Discord ID
-  const githubId = Object.values(githubDiscordMap).find(
-    (entry) => entry.discordId === selectedUserId,
-  )?.githubId;
-
-  if (!githubId) {
+  const userResult = await UserService.findUserByDiscordID(selectedUserId);
+  if (userResult.err) {
     await interaction.reply({
-      content: "❌ Unable to find linked GitHub account for selected user.",
+      content: "❌ You don’t appear to be linked to a GitHub account.",
       ephemeral: true,
     });
     return;
   }
+
+  // Find the GitHub ID using the selected Discord ID
+  const githubId = userResult.val.githubId
 
   const result = await ItemService.updateAssignee({
     itemId: githubIssueId,

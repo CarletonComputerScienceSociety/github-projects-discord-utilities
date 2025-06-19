@@ -1,22 +1,9 @@
-import githubDiscordMapJson from "../../../data/githubDiscordMap.json";
+import { UserService } from "@src/items/services/UserService";
 
-// New structure: map from GitHub username to object with discordId
-const githubDiscordMap: {
-  [key: string]: {
-    githubUsername: string;
-    githubId: string;
-    discordId: string;
-  };
-} = githubDiscordMapJson;
-
-// TODO: this any should be the generalized discord.js interaction type so that all interactions can leverage this method
-export const can = (interaction: any): boolean => {
+export const can = async (interaction: any): Promise<boolean> => {
   const userId = interaction.user?.id;
+  if (!userId) return false;
 
-  const discordIds = Object.values(githubDiscordMap).map(
-    (entry) => entry.discordId,
-  );
-  const isAuthorized = discordIds.includes(userId);
-
-  return isAuthorized;
+  const userResult = await UserService.findUserByDiscordID(userId);
+  return userResult.ok;
 };
