@@ -59,7 +59,7 @@ describe("assigneeSelectInteraction", () => {
     await assigneeSelectInteraction(interaction as any);
 
     expect(mockReply).toHaveBeenCalledWith({
-      content: "❌ Unable to find linked GitHub account for selected user.",
+      content: "❌ You don’t appear to be linked to a GitHub account.",
       ephemeral: true,
     });
   });
