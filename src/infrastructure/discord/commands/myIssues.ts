@@ -26,7 +26,7 @@ export async function execute(interaction: CommandInteraction) {
   }
 
   const discordUserId = interaction.user.id;
-  
+
   const userResult = await UserService.findUserByDiscordID(discordUserId);
   if (userResult.err) {
     await interaction.reply({
@@ -37,7 +37,6 @@ export async function execute(interaction: CommandInteraction) {
   }
 
   const githubUsername = userResult.val.githubUsername;
-
 
   await interaction.deferReply({ ephemeral: true });
 

@@ -73,7 +73,8 @@ const formatDiscordAssignees = async (assignees: string[]) => {
   const mentions = await Promise.all(
     assignees.map(async (githubUrl) => {
       const githubUsername = githubUrl.replace("https://github.com/", "");
-      const userResult = await UserService.findUserByGithubUsername(githubUsername);
+      const userResult =
+        await UserService.findUserByGithubUsername(githubUsername);
 
       return userResult.ok ? `<@${userResult.val.discordId}>` : githubUsername;
     }),

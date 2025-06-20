@@ -23,7 +23,7 @@ export async function assigneeSelectInteraction(
   }
 
   // Find the GitHub ID using the selected Discord ID
-  const githubId = userResult.val.githubId
+  const githubId = userResult.val.githubId;
 
   const result = await ItemService.updateAssignee({
     itemId: githubIssueId,

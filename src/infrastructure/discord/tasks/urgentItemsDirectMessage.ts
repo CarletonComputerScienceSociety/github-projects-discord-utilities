@@ -38,7 +38,8 @@ export const urgentItemsDirectMessage = async (client: any) => {
       const githubUsername = githubUrl.split("/").pop();
       if (!githubUsername) continue;
 
-      const userResult = await UserService.findUserByGithubUsername(githubUsername);
+      const userResult =
+        await UserService.findUserByGithubUsername(githubUsername);
       if (userResult.err || !userResult.val.discordId) {
         logger.warn({
           event: "dailyTasksReminder.missingMapping",
