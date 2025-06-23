@@ -23,8 +23,8 @@ export const simpleTaskReportMessage = async ({
     !hasUrgent && !hasUnassigned
       ? "Nothing urgent or unassigned today! 🐀🥂"
       : "Check out all upcoming tasks [here.](https://github.com/orgs/CarletonComputerScienceSociety/projects/18) 👀";
-  const urgentItemsLinkThreshold = 5
-  const urgentItemsLinkBool = urgentItems.length <= urgentItemsLinkThreshold
+  const urgentItemsLinkThreshold = 5;
+  const urgentItemsLinkBool = urgentItems.length <= urgentItemsLinkThreshold;
   return {
     title: `Daily Task Reminder ${randomEmoji}`,
     message: `${baseMessage}\n\n💡 **Fun Fact**: ${randomFact}.`,
