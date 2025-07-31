@@ -20,6 +20,8 @@ export const completeTaskReportMessage = async ({
     !hasUrgent && hasUpcoming && !hasUnassigned
       ? "Nothing urgent or unassigned upcoming! 🐀🥂"
       : "Check out all upcoming tasks [here.](https://github.com/orgs/CarletonComputerScienceSociety/projects/18) 🐀🐀";
+  const urgentItemsLinkThreshold = 5;
+  const urgentItemsLinkBool = urgentItems.length <= urgentItemsLinkThreshold;
 
   return {
     title: "Biweekly Tasks Reminder ☀️🌱",
@@ -30,7 +32,7 @@ export const completeTaskReportMessage = async ({
             {
               title: "🔥 Urgent & Overdue",
               items: urgentItems,
-              includeLinks: true,
+              includeLinks: urgentItemsLinkBool,
             },
           ]
         : []),

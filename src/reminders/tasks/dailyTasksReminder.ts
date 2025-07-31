@@ -31,8 +31,8 @@ export const dailyTasksReminder = async () => {
   if (githubItemsResult.err) {
     return githubItemsResult;
   }
-
-  const nonBacklogItems = filterOutStatus(githubItemsResult.val, "Backlog");
+  const nonIceboxItems = filterOutStatus(githubItemsResult.val, "Icebox");
+  const nonBacklogItems = filterOutStatus(nonIceboxItems, "Backlog");
   const unassignedItems = filterForUnassigned(nonBacklogItems);
   const upcomingItems = filterUpcomingItems(nonBacklogItems);
   const urgentItems = filterForUrgentItems(nonBacklogItems);
