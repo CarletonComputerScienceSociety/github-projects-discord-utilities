@@ -1,4 +1,6 @@
 import { ItemService } from "@src/items/services";
+import { assigneeSelectInteraction } from "@infrastructure/discord/interactions/assigneeSelectInteraction";
+import { UserService } from "@src/items/services/UserService";
 
 // Define IDs
 const discordId = "147881865548791808";
@@ -12,20 +14,12 @@ jest.mock("@src/items/services", () => ({
   },
 }));
 
-// Use dynamic mocking for githubDiscordMapJson
-beforeAll(() => {
-  jest.doMock("../../../../data/githubDiscordMap.json", () => {
-    return {
-      [githubUsername]: {
-        githubUsername,
-        githubId,
-        discordId,
-      },
-    };
-  });
-});
-
-import { assigneeSelectInteraction } from "@infrastructure/discord/interactions/assigneeSelectInteraction";
+// Manual mock of UserService
+jest.mock("@src/items/services/UserService", () => ({
+  UserService: {
+    findUserByDiscordID: jest.fn(),
+  },
+}));
 
 describe("assigneeSelectInteraction", () => {
   const mockReply = jest.fn();
@@ -58,16 +52,29 @@ describe("assigneeSelectInteraction", () => {
       "not-in-map",
     ]);
 
+    (UserService.findUserByDiscordID as jest.Mock).mockResolvedValue({
+      err: true,
+    });
+
     await assigneeSelectInteraction(interaction as any);
 
     expect(mockReply).toHaveBeenCalledWith({
-      content: "❌ Unable to find linked GitHub account for selected user.",
+      content: "❌ You don’t appear to be linked to a GitHub account.",
       ephemeral: true,
     });
   });
 
   it("will show error if updateAssignee fails", async () => {
     const interaction = makeInteraction("issue:assignee:select:issue-001");
+
+    (UserService.findUserByDiscordID as jest.Mock).mockResolvedValue({
+      ok: true,
+      val: {
+        githubUsername,
+        githubId,
+        discordId,
+      },
+    });
 
     (ItemService.updateAssignee as jest.Mock).mockResolvedValue({ err: true });
 
@@ -87,6 +94,15 @@ describe("assigneeSelectInteraction", () => {
 
   it("will update message if assignee update succeeds", async () => {
     const interaction = makeInteraction("issue:assignee:select:issue-002");
+
+    (UserService.findUserByDiscordID as jest.Mock).mockResolvedValue({
+      ok: true,
+      val: {
+        githubUsername,
+        githubId,
+        discordId,
+      },
+    });
 
     (ItemService.updateAssignee as jest.Mock).mockResolvedValue({ err: false });
 

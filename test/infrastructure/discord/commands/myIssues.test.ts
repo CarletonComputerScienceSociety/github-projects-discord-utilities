@@ -1,9 +1,11 @@
-import { execute } from "@infrastructure/discord/commands/myIssues";
 import { GithubAPI } from "@infrastructure/github";
 import { can } from "@infrastructure/discord/authz";
 import { buildIssueButtonRow } from "@infrastructure/discord/builders";
 import { formatDiscordDate } from "@infrastructure/discord/webhookMessages";
+import { UserService } from "@src/items/services/UserService";
+import { execute } from "@infrastructure/discord/commands/myIssues";
 
+// Mocks
 jest.mock("@infrastructure/github", () => ({
   GithubAPI: {
     fetchProjectItems: jest.fn(),
@@ -22,12 +24,17 @@ jest.mock("@infrastructure/discord/webhookMessages", () => ({
   formatDiscordDate: jest.fn((date) => `Formatted(${date})`),
 }));
 
+jest.mock("@src/items/services/UserService", () => ({
+  UserService: {
+    findUserByDiscordID: jest.fn(),
+  },
+}));
+
 describe("my-issues command", () => {
   const mockReply = jest.fn();
   const mockEditReply = jest.fn();
   const mockDeferReply = jest.fn();
   const mockFollowUp = jest.fn();
-  const mockLogger = { info: jest.fn(), error: jest.fn() };
 
   const makeInteraction = (options = {}) => ({
     user: { id: "user-123" },
@@ -67,16 +74,11 @@ describe("my-issues command", () => {
 
   it("will show error if user is not linked to a GitHub account", async () => {
     (can as jest.Mock).mockReturnValue(true);
-    const interaction = makeInteraction();
-    interaction.user.id = "not-in-map";
-    jest.spyOn(Object, "values").mockReturnValueOnce([
-      {
-        githubUsername: "test-user",
-        discordId: "someone-else",
-        githubId: "123",
-      },
-    ]);
+    (UserService.findUserByDiscordID as jest.Mock).mockResolvedValue({
+      err: true,
+    });
 
+    const interaction = makeInteraction();
     await execute(interaction as any);
 
     expect(mockReply).toHaveBeenCalledWith({
@@ -87,11 +89,10 @@ describe("my-issues command", () => {
 
   it("will show error if GitHub API fails", async () => {
     (can as jest.Mock).mockReturnValue(true);
-    jest
-      .spyOn(Object, "values")
-      .mockReturnValue([
-        { githubUsername: "test-user", discordId: "user-123" },
-      ]);
+    (UserService.findUserByDiscordID as jest.Mock).mockResolvedValue({
+      ok: true,
+      val: { githubUsername: "test-user" },
+    });
     (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({
       err: true,
       val: { message: "Boom" },
@@ -108,11 +109,10 @@ describe("my-issues command", () => {
 
   it("will show message if no assigned issues are found", async () => {
     (can as jest.Mock).mockReturnValue(true);
-    jest
-      .spyOn(Object, "values")
-      .mockReturnValue([
-        { githubUsername: "test-user", discordId: "user-123" },
-      ]);
+    (UserService.findUserByDiscordID as jest.Mock).mockResolvedValue({
+      ok: true,
+      val: { githubUsername: "test-user" },
+    });
     (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({
       err: false,
       val: [],
@@ -129,11 +129,10 @@ describe("my-issues command", () => {
 
   it("will show a specific issue by index", async () => {
     (can as jest.Mock).mockReturnValue(true);
-    jest
-      .spyOn(Object, "values")
-      .mockReturnValue([
-        { githubUsername: "test-user", discordId: "user-123" },
-      ]);
+    (UserService.findUserByDiscordID as jest.Mock).mockResolvedValue({
+      ok: true,
+      val: { githubUsername: "test-user" },
+    });
     (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({
       err: false,
       val: [defaultItem({ assignedUsers: ["https://github.com/test-user"] })],
@@ -151,11 +150,10 @@ describe("my-issues command", () => {
 
   it("will show index list when no index is provided", async () => {
     (can as jest.Mock).mockReturnValue(true);
-    jest
-      .spyOn(Object, "values")
-      .mockReturnValue([
-        { githubUsername: "test-user", discordId: "user-123" },
-      ]);
+    (UserService.findUserByDiscordID as jest.Mock).mockResolvedValue({
+      ok: true,
+      val: { githubUsername: "test-user" },
+    });
     (GithubAPI.fetchProjectItems as jest.Mock).mockResolvedValue({
       err: false,
       val: [defaultItem({ assignedUsers: ["https://github.com/test-user"] })],

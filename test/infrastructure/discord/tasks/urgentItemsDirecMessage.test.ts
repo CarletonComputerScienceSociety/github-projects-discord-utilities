@@ -1,5 +1,6 @@
 import { urgentItemsDirectMessage } from "@infrastructure/discord/tasks/urgentItemsDirectMessage";
 import { GithubAPI } from "@infrastructure/github";
+import { UserService } from "@src/items/services/UserService";
 
 jest.mock("@infrastructure/github", () => ({
   GithubAPI: {
@@ -11,17 +12,11 @@ jest.mock("@infrastructure/discord/webhookMessages", () => ({
   formatDiscordDate: jest.fn((date) => date.toISOString().split("T")[0]),
 }));
 
-jest.mock(
-  "../../../../data/githubDiscordMap.json",
-  () => ({
-    MathyouMB: {
-      githubUsername: "MathyouMB",
-      githubId: "mock-github-id",
-      discordId: "147881865548791808",
-    },
-  }),
-  { virtual: true },
-);
+jest.mock("@src/items/services/UserService", () => ({
+  UserService: {
+    findUserByGithubUsername: jest.fn(),
+  },
+}));
 
 describe("urgentItemsDirectMessage", () => {
   let mockSend: jest.Mock;
@@ -51,6 +46,15 @@ describe("urgentItemsDirectMessage", () => {
       ],
     });
 
+    (UserService.findUserByGithubUsername as jest.Mock).mockResolvedValue({
+      ok: true,
+      val: {
+        githubUsername: "MathyouMB",
+        githubId: "mock-github-id",
+        discordId: "147881865548791808",
+      },
+    });
+
     await urgentItemsDirectMessage(mockClient);
 
     expect(mockClient.users.fetch).toHaveBeenCalledWith("147881865548791808");
@@ -78,6 +82,10 @@ describe("urgentItemsDirectMessage", () => {
           dueDate: new Date("2025-05-21"),
         },
       ],
+    });
+
+    (UserService.findUserByGithubUsername as jest.Mock).mockResolvedValue({
+      err: true,
     });
 
     await urgentItemsDirectMessage(mockClient);

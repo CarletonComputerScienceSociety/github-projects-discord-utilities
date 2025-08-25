@@ -2,16 +2,7 @@ import { GithubAPI } from "@infrastructure/github";
 import logger from "@src/config/logger";
 import { filterOutStatus, filterForUrgentItems } from "@src/items";
 import { formatDiscordDate } from "../webhookMessages";
-
-type GithubDiscordMapping = {
-  [githubUsername: string]: {
-    githubUsername: string;
-    githubId: string;
-    discordId: string;
-  };
-};
-import githubDiscordMapJson from "../../../../data/githubDiscordMap.json";
-const githubDiscordMap = githubDiscordMapJson as GithubDiscordMapping;
+import { UserService } from "@src/items/services/UserService";
 
 const urgencyEmojis = ["⏰", "🚨", "⚠️", "❗", "🧨", "💥"];
 
@@ -47,8 +38,9 @@ export const urgentItemsDirectMessage = async (client: any) => {
       const githubUsername = githubUrl.split("/").pop();
       if (!githubUsername) continue;
 
-      const mapping = githubDiscordMap[githubUsername];
-      if (!mapping || !mapping.discordId) {
+      const userResult =
+        await UserService.findUserByGithubUsername(githubUsername);
+      if (userResult.err || !userResult.val.discordId) {
         logger.warn({
           event: "dailyTasksReminder.missingMapping",
           body: `No Discord ID found for GitHub user: ${githubUsername}`,
@@ -56,7 +48,7 @@ export const urgentItemsDirectMessage = async (client: any) => {
         continue;
       }
 
-      const discordId = mapping.discordId;
+      const discordId = userResult.val.discordId;
       const list = groupedByDiscordId.get(discordId) || [];
       list.push({
         title: item.title,
