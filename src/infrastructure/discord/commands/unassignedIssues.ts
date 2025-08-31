@@ -27,7 +27,7 @@ export const data = new SlashCommandBuilder()
   );
 
 export async function execute(interaction: CommandInteraction) {
-  if (!can(interaction)) {
+  if (!can(interaction.user.id, ["githubissue:read"])) {
     await interaction.reply({
       content: "You do not have permission to view issues.",
       ephemeral: true,

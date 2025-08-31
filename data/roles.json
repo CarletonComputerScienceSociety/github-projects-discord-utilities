@@ -1,0 +1,8 @@
+{
+    "admin": {
+      "permissions": ["githubIssue:write", "githubIssue:read"]
+    },
+    "readonly": {
+      "permissions": ["githubIssue:read"]
+    }
+}

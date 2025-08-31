@@ -1,4 +1,5 @@
 import githubDiscordMapJson from "../../../data/githubDiscordMap.json";
+import rolesJson from "../../../data/roles.json";
 
 // New structure: map from GitHub username to object with discordId
 const githubDiscordMap: {
@@ -6,17 +7,28 @@ const githubDiscordMap: {
     githubUsername: string;
     githubId: string;
     discordId: string;
+    roles: string[];
   };
 } = githubDiscordMapJson;
 
-// TODO: this any should be the generalized discord.js interaction type so that all interactions can leverage this method
-export const can = (interaction: any): boolean => {
-  const userId = interaction.user?.id;
+const roles: {
+  [role: string]: {
+    permissions: string[];
+  };
+} = rolesJson;
 
-  const discordIds = Object.values(githubDiscordMap).map(
-    (entry) => entry.discordId,
+export const can = (discordUserID: string, perms: string[]): boolean => {
+  const userEntry = Object.values(githubDiscordMap).find(
+    (entry: any) => entry.discordId === discordUserID
   );
-  const isAuthorized = discordIds.includes(userId);
 
-  return isAuthorized;
+  if (!userEntry || !userEntry.roles) {
+    return false; 
+  } 
+
+  const userPermissions = new Set(
+    userEntry.roles.flatMap((role: string) => roles[role]?.permissions || [])
+  );
+
+  return perms.every(perm => userPermissions.has(perm));
 };

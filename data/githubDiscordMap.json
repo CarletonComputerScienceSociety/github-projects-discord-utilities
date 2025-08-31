@@ -2,76 +2,97 @@
   "AJaccP": {
     "githubUsername": "AJaccP",
     "githubId": "U_kgDOBrIU2w",
-    "discordId": "693093284998021141"
+    "discordId": "693093284998021141",
+    "roles": ["admin"] 
   },
   "eros-mcguire": {
     "githubUsername": "eros-mcguire",
     "githubId": "U_kgDOCLs4uA",
-    "discordId": "981895462992891935"
+    "discordId": "981895462992891935",
+    "roles": ["readonly"] 
   },
   "exkellybur": {
     "githubUsername": "exkellybur",
     "githubId": "U_kgDOBx7TuA",
-    "discordId": "398923451311587338"
+    "discordId": "398923451311587338",
+    "roles": ["readonly"] 
   },
   "JohnLu2004": {
     "githubUsername": "JohnLu2004",
     "githubId": "MDQ6VXNlcjg3NjczMDY4",
-    "discordId": "358054341179080704"
+    "discordId": "358054341179080704",
+    "roles": ["readonly"] 
   },
   "kimiaKR": {
     "githubUsername": "kimiaKR",
     "githubId": "U_kgDOC0aBdw",
-    "discordId": "706977821502865578"
+    "discordId": "706977821502865578",
+    "roles": ["readonly"] 
   },
   "LandonJMM": {
     "githubUsername": "LandonJMM",
     "githubId": "U_kgDOBs5OWw",
-    "discordId": "657607140835328059"
+    "discordId": "657607140835328059",
+    "roles": ["readonly"] 
   },
   "MathyouMB": {
     "githubUsername": "MathyouMB",
     "githubId": "MDQ6VXNlcjQzMjIzNjgy",
-    "discordId": "147881865548791808"
+    "discordId": "147881865548791808",
+    "roles": ["admin"] 
   },
   "MrRibcage": {
     "githubUsername": "MrRibcage",
     "githubId": "MDQ6VXNlcjQzNjU2MTM3",
-    "discordId": "142782738615762944"
+    "discordId": "142782738615762944",
+    "roles": ["readonly"] 
   },
   "Nguyen-HanhNong": {
     "githubUsername": "Nguyen-HanhNong",
     "githubId": "MDQ6VXNlcjgxOTc3MzUw",
-    "discordId": "929100662082531398"
+    "discordId": "929100662082531398",
+    "roles": ["readonly"] 
   },
   "rebeccakempe12": {
     "githubUsername": "rebeccakempe12",
     "githubId": "MDQ6VXNlcjc3MzY4MTky",
-    "discordId": "730876980861599744"
+    "discordId": "730876980861599744",
+    "roles": ["readonly"] 
   },
   "richard-dh-kim": {
     "githubUsername": "richard-dh-kim",
     "githubId": "MDQ6VXNlcjU4OTU5NjQ5",
-    "discordId": "241421629543022592"
+    "discordId": "241421629543022592",
+    "roles": ["readonly"] 
   },
   "rj-sci": {
     "githubUsername": "rj-sci",
-    "githubId": "tbd",
-    "discordId": "327557300497809422"
+    "githubId": "MDQ6VXNlcjcxNTM2MjYy",
+    "discordId": "327557300497809422",
+    "roles": ["readonly"] 
   },
   "ryangchung": {
     "githubUsername": "ryangchung",
     "githubId": "MDQ6VXNlcjg3MDI3OTgx",
-    "discordId": "365948481946517504"
+    "discordId": "365948481946517504",
+    "roles": ["readonly"] 
   },
   "VictorLi5611": {
     "githubUsername": "VictorLi5611",
     "githubId": "MDQ6VXNlcjczMzA1Mjg3",
-    "discordId": "247472197902270465"
+    "discordId": "247472197902270465",
+    "roles": ["readonly"] 
   },
   "VMordvinova": {
     "githubUsername": "VMordvinova",
     "githubId": "U_kgDOCFXXvw",
-    "discordId": "759902786107473932"
+    "discordId": "759902786107473932",
+    "roles": ["readonly"] 
+  },
+  "marceljc3": {
+    "githubUsername": "marceljc3",
+    "githubId": "MDQ6VXNlcjQ2NjkzMzU2", 
+    "discordId": "1180337219400118393",
+    "roles": ["readonly"] 
   }
 }
