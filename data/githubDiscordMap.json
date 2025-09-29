@@ -9,7 +9,7 @@
     "githubUsername": "eros-mcguire",
     "githubId": "U_kgDOCLs4uA",
     "discordId": "981895462992891935",
-    "roles": ["readonly"] 
+    "roles": ["admin"] 
   },
   "exkellybur": {
     "githubUsername": "exkellybur",
@@ -27,13 +27,13 @@
     "githubUsername": "kimiaKR",
     "githubId": "U_kgDOC0aBdw",
     "discordId": "706977821502865578",
-    "roles": ["readonly"] 
+    "roles": ["admin"] 
   },
   "LandonJMM": {
     "githubUsername": "LandonJMM",
     "githubId": "U_kgDOBs5OWw",
     "discordId": "657607140835328059",
-    "roles": ["readonly"] 
+    "roles": ["admin"] 
   },
   "MathyouMB": {
     "githubUsername": "MathyouMB",
@@ -45,13 +45,13 @@
     "githubUsername": "MrRibcage",
     "githubId": "MDQ6VXNlcjQzNjU2MTM3",
     "discordId": "142782738615762944",
-    "roles": ["readonly"] 
+    "roles": ["admin"] 
   },
   "Nguyen-HanhNong": {
     "githubUsername": "Nguyen-HanhNong",
     "githubId": "MDQ6VXNlcjgxOTc3MzUw",
     "discordId": "929100662082531398",
-    "roles": ["readonly"] 
+    "roles": ["admin"] 
   },
   "rebeccakempe12": {
     "githubUsername": "rebeccakempe12",
@@ -87,7 +87,7 @@
     "githubUsername": "VMordvinova",
     "githubId": "U_kgDOCFXXvw",
     "discordId": "759902786107473932",
-    "roles": ["readonly"] 
+    "roles": ["admin"] 
   },
   "marceljc3": {
     "githubUsername": "marceljc3",
