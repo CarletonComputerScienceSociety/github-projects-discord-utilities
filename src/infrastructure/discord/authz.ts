@@ -19,16 +19,16 @@ const roles: {
 
 export const can = (discordUserID: string, perms: string[]): boolean => {
   const userEntry = Object.values(githubDiscordMap).find(
-    (entry: any) => entry.discordId === discordUserID
+    (entry: any) => entry.discordId === discordUserID,
   );
 
   if (!userEntry || !userEntry.roles) {
-    return false; 
-  } 
+    return false;
+  }
 
   const userPermissions = new Set(
-    userEntry.roles.flatMap((role: string) => roles[role]?.permissions || [])
+    userEntry.roles.flatMap((role: string) => roles[role]?.permissions || []),
   );
 
-  return perms.every(perm => userPermissions.has(perm));
+  return perms.every((perm) => userPermissions.has(perm));
 };
