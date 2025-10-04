@@ -18,7 +18,7 @@ export const data = new SlashCommandBuilder()
   );
 
 export async function execute(interaction: CommandInteraction) {
-  if (!can(interaction.user.id, ["githubissue:write"])) {
+  if (!can(interaction.user.id, ["githubIssue:write"])) {
     await interaction.reply({
       content: "You do not have permission to create an issue.",
       ephemeral: true,
