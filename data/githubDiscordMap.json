@@ -91,8 +91,32 @@
   },
   "marceljc3": {
     "githubUsername": "marceljc3",
-    "githubId": "MDQ6VXNlcjQ2NjkzMzU2", 
+    "githubId": "MDQ6VXNlcjQ2NjkzMzU2",
     "discordId": "1180337219400118393",
-    "roles": ["readonly"] 
+    "roles": ["readonly"]
+  },
+  "afaqmvirk": {
+    "githubUsername": "afaqmvirk",
+    "githubId": "MDQ6VXNlcjYwODUyNjQ4",
+    "discordId": "1093995307517366332",
+    "roles": ["admin"]
+  },
+  "rieleyhunt": {
+    "githubUsername": "rieleyhunt",
+    "githubId": "U_kgDOBs-hEQ",
+    "discordId": "209093600288440320",
+    "roles": ["admin"]
+  },
+  "mpfaff": {
+    "githubUsername": "mpfaff",
+    "githubId": "MDQ6VXNlcjIzMDEzOTMx",
+    "discordId": "532526243414016010",
+    "roles": ["admin"]
+  },
+  "KarthiKanthavel": {
+    "githubUsername": "KarthiKanthavel",
+    "githubId": "U_kgDOBZB7XQ",
+    "discordId": "768123615890636801",
+    "roles": ["admin"]
   }
 }
